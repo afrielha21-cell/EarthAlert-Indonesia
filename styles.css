@@ -136,7 +136,7 @@
 
 
 /* V21 — Atlas result title and side-by-side model evaluation charts. */
-#atlasDetail .atlas-result-title{font-size:1.68rem!important;line-height:1.22;font-weight:800;letter-spacing:.065em;color:#12677d;margin:0 0 6px}
+#atlasDetail > .overline:first-child,#atlasDetail .atlas-result-title{font-size:1.68rem!important;line-height:1.22;font-weight:800;letter-spacing:.065em;color:#12677d;margin:0 0 6px}
 #atlasDetail .detail-subbrand{font-size:.84rem;line-height:1.4;font-weight:700;margin:0 0 12px;color:#557284}
 #mapPlaceBadge .small{display:none!important}
 .metric-comparison{display:grid;grid-template-columns:minmax(0,1.36fr) minmax(0,1fr);gap:20px;margin:18px 0 12px;align-items:stretch}
