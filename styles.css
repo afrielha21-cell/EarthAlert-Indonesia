@@ -75,3 +75,49 @@
 @media(max-width:1150px){#page-atlas .workbench{grid-template-columns:minmax(0,1fr) 315px}}
 @media(max-width:920px){#page-atlas .workbench{display:block}#page-atlas .detail-panel{margin-top:14px}}
 @media(max-width:570px){#atlasMap{height:430px;min-height:430px}.map-status{left:8px;top:52px;max-width:calc(100% - 16px)}}
+
+
+/* V19 — Local Leaflet critical CSS: avoids broken mosaic tiles if remote Leaflet CSS is blocked. */
+#atlasMap.leaflet-container{position:relative;overflow:hidden;isolation:isolate;-webkit-tap-highlight-color:transparent;background:#c5dbe7;outline:0}
+#atlasMap .leaflet-pane,#atlasMap .leaflet-tile,#atlasMap .leaflet-marker-icon,#atlasMap .leaflet-marker-shadow,
+#atlasMap .leaflet-tile-container,#atlasMap .leaflet-pane>svg,#atlasMap .leaflet-pane>canvas,#atlasMap .leaflet-zoom-box,
+#atlasMap .leaflet-image-layer,#atlasMap .leaflet-layer{position:absolute;top:0;left:0}
+#atlasMap .leaflet-map-pane canvas{z-index:100}
+#atlasMap .leaflet-tile-pane{z-index:200}
+#atlasMap .leaflet-overlay-pane{z-index:400}
+#atlasMap .leaflet-shadow-pane{z-index:500}
+#atlasMap .leaflet-marker-pane{z-index:600}
+#atlasMap .leaflet-tooltip-pane{z-index:650}
+#atlasMap .leaflet-popup-pane{z-index:700}
+#atlasMap .leaflet-map-pane img,#atlasMap .leaflet-tile{max-width:none!important;max-height:none!important}
+#atlasMap .leaflet-tile{visibility:hidden;user-select:none;-webkit-user-select:none;pointer-events:none}
+#atlasMap .leaflet-tile-loaded{visibility:inherit}
+#atlasMap .leaflet-tile-container{pointer-events:none}
+#atlasMap .leaflet-zoom-animated{transform-origin:0 0}
+#atlasMap .leaflet-zoom-hide{visibility:hidden}
+#atlasMap .leaflet-control-container .leaflet-top,#atlasMap .leaflet-control-container .leaflet-bottom{position:absolute;z-index:1000;pointer-events:none}
+#atlasMap .leaflet-top{top:0}#atlasMap .leaflet-bottom{bottom:0}
+#atlasMap .leaflet-left{left:0}#atlasMap .leaflet-right{right:0}
+#atlasMap .leaflet-control{position:relative;z-index:800;pointer-events:auto;float:left;clear:both}
+#atlasMap .leaflet-right .leaflet-control{float:right}
+#atlasMap .leaflet-top .leaflet-control{margin-top:10px}
+#atlasMap .leaflet-bottom .leaflet-control{margin-bottom:10px}
+#atlasMap .leaflet-left .leaflet-control{margin-left:10px}
+#atlasMap .leaflet-right .leaflet-control{margin-right:10px}
+#atlasMap .leaflet-bar{box-shadow:0 1px 5px rgba(0,0,0,.25);border-radius:5px}
+#atlasMap .leaflet-bar a{display:block;width:30px;height:30px;line-height:30px;text-align:center;text-decoration:none;background:#fff;color:#303d49;border-bottom:1px solid #e3e7e9;font:700 22px/30px Arial,sans-serif}
+#atlasMap .leaflet-bar a:first-child{border-radius:5px 5px 0 0}
+#atlasMap .leaflet-bar a:last-child{border-bottom:0;border-radius:0 0 5px 5px}
+#atlasMap .leaflet-container a.leaflet-disabled{cursor:default;color:#aaa;background:#f6f6f6}
+#atlasMap .leaflet-control-attribution{padding:0 5px;color:#333;background:rgba(255,255,255,.82)}
+#atlasMap .leaflet-control-attribution a{color:#236c85;text-decoration:underline}
+#atlasMap .leaflet-interactive{cursor:pointer}
+#atlasMap .leaflet-tooltip{position:absolute;padding:5px 8px;background:#fff;border:1px solid #d7e0e5;border-radius:5px;color:#243c4b;white-space:nowrap;pointer-events:none;box-shadow:0 1px 6px #101b2930}
+#atlasMap .leaflet-tooltip-top:before,#atlasMap .leaflet-tooltip-bottom:before,#atlasMap .leaflet-tooltip-left:before,#atlasMap .leaflet-tooltip-right:before{display:none}
+#atlasMap .leaflet-overlay-pane svg{user-select:none}
+#atlasMap .leaflet-control-zoom{border:0!important;box-shadow:0 1px 7px #192f4030}
+#atlasMap .leaflet-control-zoom a{background:#fff;color:#234d67}
+.page[hidden],.page:not(.active){display:none!important}
+#page-atlas[hidden] .leaflet-container{display:none!important}
+.nav-item:focus:not(:focus-visible){outline:0;box-shadow:none}
+.nav-item:focus-visible{outline:2px solid #0c8792;outline-offset:2px}
