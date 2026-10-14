@@ -118,9 +118,9 @@ function setBasemap(){
  const ticket=++atlasLoadTicket;
  showMapStatus('Memuat peta '+(state.basemap==='ocean'?'Ocean Relief':'Satelit')+'…');
  atlasTile=L.tileLayer(spec.url,{attribution:spec.attribution,minZoom:0,maxZoom:19,maxNativeZoom:spec.maxNativeZoom,keepBuffer:4,crossOrigin:false});
- atlasTile.on('tileload',()=>{loaded++;if(ticket===atlasLoadTicket)showMapStatus('');});
- atlasTile.on('tileerror',()=>{errors++;if(ticket===atlasLoadTicket&&errors>=3&&loaded===0){showMapStatus('Tile peta belum berhasil dimuat dari Esri. Periksa koneksi, tunggu beberapa saat, atau coba tombol Satelit. Data BMKG tetap dapat digunakan.');}});
- atlasTile.on('load',()=>{if(ticket===atlasLoadTicket && loaded)showMapStatus('');});
+ atlasTile.on('tileload',()=>{loaded++;if(ticket===atlasLoadTicket&&errors<3)showMapStatus('');});
+ atlasTile.on('tileerror',()=>{errors++;if(ticket===atlasLoadTicket&&errors>=3){showMapStatus('Sebagian tile peta Esri gagal dimuat. Coba Satelit/Ocean Relief, refresh, atau periksa jaringan. Lokasi heksagon tetap mengikuti koordinat.');}});
+ atlasTile.on('load',()=>{if(ticket===atlasLoadTicket && loaded && errors<3)showMapStatus('');});
  atlasTile.addTo(atlasMap);atlasTile.bringToBack();
 }
 function showAtlasDetail(html){$('#atlasDetail').innerHTML=html;}
@@ -207,7 +207,33 @@ async function setupMap(){
   if(typeof ResizeObserver!=='undefined')new ResizeObserver(()=>{if(state.tab==='atlas')requestAnimationFrame(()=>atlasMap?.invalidateSize());}).observe(holder);
  }catch(err){console.error('Peta gagal diinisialisasi',err);showMapStatus('Peta gagal diinisialisasi: '+err.message);}
 }
-function navTo(tab){if(!$('#page-'+tab))tab='atlas';state.tab=tab;$$('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+tab));$$('[data-nav]').forEach(b=>b.classList.toggle('selected',b.dataset.nav===tab));history.replaceState(null,'','#'+tab);window.scrollTo({top:0,behavior:'instant'});if(tab==='atlas' && atlasMap){requestAnimationFrame(()=>atlasMap.invalidateSize());setTimeout(()=>atlasMap?.invalidateSize(),230);}}
+function repairAtlasStructure(){
+ const atlas=$('#page-atlas'),workbench=atlas?.querySelector('.workbench');
+ const detail=$('#atlasDetail'),news=$('#atlas-news');
+ if(workbench&&detail&&detail.parentElement!==workbench)workbench.appendChild(detail);
+ if(atlas&&news&&!atlas.contains(news))atlas.appendChild(news);
+}
+function navTo(tab){
+ repairAtlasStructure();
+ if(!$('#page-'+tab))tab='atlas';
+ state.tab=tab;
+ $$('.page').forEach(p=>{
+  const active=p.id==='page-'+tab;
+  p.classList.toggle('active',active);
+  p.hidden=!active;
+  p.setAttribute('aria-hidden',String(!active));
+  if(!active)p.style.setProperty('display','none','important');
+  else p.style.removeProperty('display');
+ });
+ $$('[data-nav]').forEach(b=>{
+  const active=b.dataset.nav===tab;
+  b.classList.toggle('selected',active);
+  b.setAttribute('aria-current',active?'page':'false');
+ });
+ history.replaceState(null,'','#'+tab);
+ window.scrollTo({top:0,behavior:'instant'});
+ if(tab==='atlas' && atlasMap){requestAnimationFrame(()=>atlasMap.invalidateSize({pan:false}));setTimeout(()=>atlasMap?.invalidateSize({pan:false}),320);}
+}
 function initAtlas(){
  $$('[data-nav]').forEach(b=>b.addEventListener('click',()=>navTo(b.dataset.nav)));
  $$('[data-basemap]').forEach(b=>b.addEventListener('click',()=>{state.basemap=b.dataset.basemap;$$('[data-basemap]').forEach(x=>x.classList.toggle('on',x===b));setBasemap()}));
@@ -307,18 +333,18 @@ async function initBMKG(){
  let entries=[];
  const URLS={gempa_terbaru:'https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json',m5:'https://data.bmkg.go.id/DataMKG/TEWS/gempaterkini.json',gempa_dirasakan:'https://data.bmkg.go.id/DataMKG/TEWS/gempadirasakan.json'};
  const categoryName={gempa_terbaru:'Gempa terbaru',m5:'M5+',gempa_dirasakan:'Gempa dirasakan'};
- $('#bmkg-category').addEventListener('change',()=>renderBMKGRows(entries));
+ $('#bmkg-category').addEventListener('change',()=>{renderBMKGRows(entries);$('#bmkg-update').textContent=entries.length?'Kategori dipilih; klik Update untuk memeriksa data BMKG terbaru.':'Kategori dipilih; klik Update untuk memuat data BMKG.';});
  async function loadLocalFallback(){
   const resp=await fetch('data/bmkg_snapshot.json?t='+Date.now(),{cache:'no-store'});
   if(!resp.ok)throw new Error('Snapshot hosting tidak ditemukan');
   const obj=await resp.json();const fresh=normalizeBMKGEntries(obj);
   if(!fresh.length)throw new Error('Snapshot hosting belum berisi data');
   entries=fresh;renderBMKGRows(entries);
-  setMsg('Menampilkan snapshot yang tersimpan pada hosting, dibuat '+(obj.fetched_at_utc||'tanggal tidak tersedia')+'. Ini bukan pembaruan real-time.');
+  setMsg('Data resmi BMKG dari snapshot GitHub ('+(obj.fetched_at_utc||'waktu pembaruan tidak diketahui')+' UTC). '+(obj.refresh_ok?'Sinkronisasi terakhir berhasil.':'Sinkronisasi terakhir belum berhasil; data dapat berupa cache lama.')+' Klik Update untuk mengecek versi terbaru.');
  }
  $('#bmkg-fetch-btn').addEventListener('click',async()=>{
   const cat=$('#bmkg-category').value;
-  setMsg('Mencoba membaca '+categoryName[cat]+' dari BMKG Open Data…');
+  setMsg('Memeriksa '+categoryName[cat]+' dari BMKG Open Data; bila dibatasi browser, gunakan snapshot GitHub…');
   try{
    const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),11000);
    let r;try{r=await fetch(URLS[cat],{mode:'cors',cache:'no-store',signal:controller.signal});}finally{clearTimeout(timer);}
@@ -353,6 +379,10 @@ function renderMetrics(){
 }
 async function boot(){try{
  const names=['grids','events','cases','tsunami','metrics','profiles','year','metadata','news','history_counts'];const files=await Promise.all(names.map(async n=>{const r=await fetch(`data/${n}.json`);if(!r.ok)throw new Error(`Berkas ${n}.json tidak dapat dimuat.`);return r.json()}));names.forEach((n,i)=>DS[n]=files[i]);
- initAtlas();initHistory();initImpact();initMitigation();initTsunami();initBMKG();renderMetrics();navTo(location.hash.replace('#','')==='usgs'?'riwayat':location.hash.replace('#','')||'atlas');
+ repairAtlasStructure();navTo(location.hash.replace('#','')==='usgs'?'riwayat':location.hash.replace('#','')||'atlas');initAtlas();initHistory();initImpact();initMitigation();initTsunami();initBMKG();renderMetrics();
  }catch(err){const s=$('#site-status');s.textContent='Data belum berhasil dimuat: '+err.message+' Jalankan situs melalui server HTTP (atau deploy), jangan membuka index.html langsung dengan file://';s.className='site-status visible error';console.error(err);}}
+window.addEventListener('hashchange',()=>{
+ const next=location.hash.replace('#','');
+ if(['atlas','riwayat','dampak','mitigasi','tsunami','bmkg','metodologi'].includes(next)&&next!==state.tab)navTo(next);
+});
 boot();
