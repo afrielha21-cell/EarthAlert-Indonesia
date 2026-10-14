@@ -6,14 +6,14 @@
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <meta content="#ffffff" name="theme-color"/>
 <meta content="EarthAlert: atlas karakteristik aktivitas kegempaan Indonesia 2016–2025 berbasis K-Means, dengan studi kasus dampak dan panduan mitigasi kontekstual." name="description"/>
-<title>EarthAlert V19 — Atlas Kegempaan &amp; Mitigasi Indonesia</title>
+<title>EarthAlert V20 — Atlas Kegempaan &amp; Mitigasi Indonesia</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" crossorigin="anonymous" onerror="this.onerror=null;this.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'"/>
-<link href="styles.css?v=19.0" rel="stylesheet"/>
+<link href="styles.css?v=20.0" rel="stylesheet"/>
 <!-- Leaflet dimuat tanpa memblokir fitur lain melalui ensureLeaflet() dalam app.js -->
-<script defer src="app.js?v=19.0"></script>
+<script defer src="app.js?v=20.0"></script>
 </head>
 <body>
 <header class="masthead">
@@ -35,7 +35,7 @@
 <span class="head-tag">SCIENCE HUNTER INDONESIA <small style="font-size:9px;opacity:.68">V19</small></span>
 </div>
 </header>
-<main class="shell" data-earthalert-version="19.0">
+<main class="shell" data-earthalert-version="20.0">
 <div class="site-status" id="site-status" role="status">Memuat data riset EarthAlert…</div>
 <section aria-labelledby="atlasTitle" class="page active" id="page-atlas">
 <div class="page-head"><div><div class="eyebrow">ATLAS ML / INDONESIA 2016—2025</div><h1 id="atlasTitle">Membaca pola kegempaan, <span>bukan sekadar melihat titik.</span></h1><p>Peta interaktif K-Means dari katalog BMKG 2016–2025 dengan tiga indikator: frekuensi, magnitudo P90, dan kedalaman. Telusuri zona heksagon, titik episenter, atau kasus dampak historis.</p></div></div>
@@ -44,10 +44,10 @@
 <section aria-label="Peta atlas aktivitas gempa" class="map-panel">
 <div class="tool-row"><div class="tool-inline"><span class="tool-label">PETA</span><div aria-label="Basemap" class="toggle" role="group"><button class="toggle-item on" data-basemap="ocean" type="button">Ocean relief</button><button class="toggle-item" data-basemap="satellite" type="button">Satelit</button></div></div><div class="tool-inline"><span class="tool-label">MODE</span><div aria-label="Mode peta" class="toggle" role="group"><button class="toggle-item on" data-mapmode="clusters" type="button">Klaster</button><button class="toggle-item" data-mapmode="cases" type="button">Kasus dampak</button><button class="toggle-item" data-mapmode="events" type="button">Episenter M5,5+ (BMKG)</button></div></div></div>
 <div class="tool-row second"><div class="tool-inline"><label for="cluster-filter">KLASTER</label><select id="cluster-filter"><option value="all">Semua klaster</option><option value="A">A — Kedalaman relatif rendah</option><option value="B">B — P90 magnitudo relatif tinggi</option><option value="C">C — Kedalaman relatif besar</option><option value="D">D — Frekuensi tercatat relatif tinggi</option></select></div><div class="tool-inline"><label for="alpha-range">TRANSPARANSI ZONA <b id="alpha-label">75%</b></label><input id="alpha-range" max="95" min="50" step="5" type="range" value="75"/></div><div class="tool-inline check-row"><label><input checked="" id="zone-layer" type="checkbox"/> Layer zona</label><label><input checked="" id="markers-layer" type="checkbox"/> Titik klaster</label></div></div>
-<div class="map-frame"><div class="map-status" id="map-status" role="status" aria-live="polite" hidden></div><div id="atlasMap" aria-label="Peta interaktif Leaflet dengan basemap Ocean Relief atau Satelit dan data zona kegempaan BMKG"></div><div class="map-zoom"><button aria-label="Kembali ke tampilan Indonesia" title="Fokus kembali ke Indonesia" id="zoomHome" type="button">⌖</button></div><div class="map-caption">Peta interaktif Leaflet · Ocean Relief / Satelit (Esri) · Heksagon BMKG · Geser dan zoom bebas</div></div>
+<div class="map-frame"><div class="map-status" id="map-status" role="status" aria-live="polite" hidden></div><div id="atlasMap" aria-label="Peta interaktif Leaflet dengan basemap Ocean Relief atau Satelit dan data zona kegempaan BMKG"></div><div class="map-zoom"><button aria-label="Kembali ke tampilan Indonesia" title="Fokus kembali ke Indonesia" id="zoomHome" type="button">⌖</button><div class="map-place-badge" id="mapPlaceBadge" aria-live="polite">Lokasi zona akan muncul di sini</div></div><div class="map-caption">Peta interaktif Leaflet · Ocean Relief / Satelit (Esri) · Heksagon BMKG · Geser dan zoom bebas</div></div>
 <div aria-label="Legenda klaster" class="legend"><span><i style="--dot:#EF4444"></i>A · Kedalaman relatif rendah</span><span><i style="--dot:#F97316"></i>B · P90 magnitudo tinggi</span><span><i style="--dot:#22C55E"></i>C · Kedalaman relatif besar</span><span><i style="--dot:#D7A000"></i>D · Frekuensi tinggi</span></div>
 </section>
-<aside aria-live="polite" class="detail-panel" id="atlasDetail"><div class="overline">INFORMASI WILAYAH</div><h2>Temukan profil gempa di peta</h2><p class="muted">Klik titik berwarna, pilih kasus dampak, atau aktifkan episenter historis. Rincian muncul di sini tanpa menutupi peta.</p><div aria-hidden="true" class="empty-art">◎</div></aside>
+<aside aria-live="polite" class="detail-panel" id="atlasDetail"><div class="overline">HASIL ANALISIS</div><div class="detail-subbrand">EarthAlert</div><h2>Temukan profil gempa di peta</h2><p class="muted">Klik titik berwarna, pilih kasus dampak, atau aktifkan episenter historis. Rincian muncul di sini tanpa menutupi peta.</p><div aria-hidden="true" class="empty-art">◎</div></aside>
 </div>
 <div class="below-note"><span class="signal-dot"></span> Data historis K-Means tidak digunakan untuk mengeluarkan peringatan dini atau memprediksi kejadian gempa. Lapisan dampak berasal dari katalog terpisah.</div>
 <section class="atlas-news context-panel" id="atlas-news"><div class="news-heading"><div><div class="overline">PENDUKUNG INTERPRETASI</div><h2>Kajian kejadian &amp; berita relevan</h2><p class="muted">Rujukan BMKG membantu memahami kejadian nyata di sekitar zona terpilih. Artikel tidak dipakai untuk melatih atau memvalidasi tingkat bahaya klaster.</p></div></div><div class="news-grid" id="news-grid"></div><div class="noaa-footer"><div><strong>Referensi tambahan: NOAA NCEI</strong><p>Katalog gempa signifikan internasional sebagai bacaan eksternal, bukan data pelatihan EarthAlert.</p></div><a href="https://www.ncei.noaa.gov/maps/hazards/" rel="noopener noreferrer" target="_blank">Buka katalog NOAA ↗</a></div></section></section>
