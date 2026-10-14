@@ -121,3 +121,15 @@
 #page-atlas[hidden] .leaflet-container{display:none!important}
 .nav-item:focus:not(:focus-visible){outline:0;box-shadow:none}
 .nav-item:focus-visible{outline:2px solid #0c8792;outline-offset:2px}
+
+
+/* V20 — Location badge and Atlas ML result header. */
+.detail-subbrand{margin-top:4px;font-size:.84rem;font-weight:700;color:#537387;letter-spacing:.03em}
+.map-zoom{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.map-place-badge{max-width:210px;padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.92);border:1px solid rgba(18,70,103,.12);box-shadow:0 10px 22px rgba(14,36,58,.12);color:#26465c;font-size:.8rem;line-height:1.35;text-align:left;backdrop-filter:blur(6px)}
+.map-place-badge strong{display:block;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:#5d7a8f;margin-bottom:2px}
+.map-place-badge .small{display:block;margin-top:2px;font-size:.73rem;color:#648195}
+.location-chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:#e8f2f6;color:#1b5875;font-weight:700;font-size:.92rem;margin:.2rem 0 1rem}
+.location-chip .dot{width:8px;height:8px;border-radius:999px;background:#0d8aa0;display:inline-block}
+.minor-id{margin-top:-.15rem;margin-bottom:.9rem;font-size:.88rem;color:#6d8698}
+@media (max-width:720px){.map-place-badge{max-width:170px;font-size:.74rem;padding:7px 9px}}
