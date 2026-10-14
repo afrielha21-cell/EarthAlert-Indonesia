@@ -335,10 +335,22 @@ async function initBMKG(){
  const categoryName={gempa_terbaru:'Gempa terbaru',m5:'M5+',gempa_dirasakan:'Gempa dirasakan'};
  $('#bmkg-category').addEventListener('change',()=>{renderBMKGRows(entries);$('#bmkg-update').textContent=entries.length?'Kategori dipilih; klik Update untuk memeriksa data BMKG terbaru.':'Kategori dipilih; klik Update untuk memuat data BMKG.';});
  async function loadLocalFallback(){
-  const resp=await fetch('data/bmkg_snapshot.json?t='+Date.now(),{cache:'no-store'});
-  if(!resp.ok)throw new Error('Snapshot hosting tidak ditemukan');
-  const obj=await resp.json();const fresh=normalizeBMKGEntries(obj);
-  if(!fresh.length)throw new Error('Snapshot hosting belum berisi data');
+  const candidates=[
+    'data/bmkg_snapshot.json?t='+Date.now(),
+    'https://raw.githubusercontent.com/afrielha21-cell/EarthAlert-Indonesia/main/data/bmkg_snapshot.json?t='+Date.now()
+  ];
+  let obj=null,fresh=[],lastError='';
+  for(const url of candidates){
+    try{
+      const resp=await fetch(url,{cache:'no-store'});
+      if(!resp.ok)throw new Error('HTTP '+resp.status);
+      const test=await resp.json();
+      const rows=normalizeBMKGEntries(test);
+      if(!rows.length)throw new Error('snapshot masih kosong');
+      obj=test;fresh=rows;break;
+    }catch(e){lastError=e.message;}
+  }
+  if(!fresh.length)throw new Error('Snapshot tidak tersedia ('+lastError+').');
   entries=fresh;renderBMKGRows(entries);
   setMsg('Data resmi BMKG dari snapshot GitHub ('+(obj.fetched_at_utc||'waktu pembaruan tidak diketahui')+' UTC). '+(obj.refresh_ok?'Sinkronisasi terakhir berhasil.':'Sinkronisasi terakhir belum berhasil; data dapat berupa cache lama.')+' Klik Update untuk mengecek versi terbaru.');
  }
