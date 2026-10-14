@@ -102,7 +102,9 @@ function eventDetail(e){
  ${comparatorHtml(similar)}<div class="small-actions"><a class="action-link" href="https://repogempa.bmkg.go.id/eventcatalog" target="_blank" rel="noopener noreferrer">Buka katalog RepoGempa ↗</a></div>`;
 }
 // Live slippy map replaces V15/V16 fixed SVG. The 333 BMKG heksagon data remain unchanged.
-let atlasMap=null, atlasTile=null, atlasOverlay=null;
+let atlasMap=null, atlasTile=null, atlasOverlay=null, atlasLoadTicket=0;
+const showMapStatus=(txt='')=>{const e=$('#map-status');if(!e)return;e.hidden=!txt;e.textContent=txt;};
+
 const ATLAS_HOME={center:[-2.3,119],zoom:5};
 const TILE_SOURCES={
   ocean:{url:'https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}',attribution:'Ocean Relief © Esri, GEBCO, NOAA and contributors',maxNativeZoom:13},
@@ -112,7 +114,13 @@ function setBasemap(){
  if(!atlasMap)return;
  if(atlasTile)atlasMap.removeLayer(atlasTile);
  const spec=TILE_SOURCES[state.basemap]||TILE_SOURCES.ocean;
- atlasTile=L.tileLayer(spec.url,{attribution:spec.attribution,minZoom:0,maxZoom:19,maxNativeZoom:spec.maxNativeZoom,keepBuffer:4});
+ let errors=0,loaded=0;
+ const ticket=++atlasLoadTicket;
+ showMapStatus('Memuat peta '+(state.basemap==='ocean'?'Ocean Relief':'Satelit')+'…');
+ atlasTile=L.tileLayer(spec.url,{attribution:spec.attribution,minZoom:0,maxZoom:19,maxNativeZoom:spec.maxNativeZoom,keepBuffer:4,crossOrigin:false});
+ atlasTile.on('tileload',()=>{loaded++;if(ticket===atlasLoadTicket)showMapStatus('');});
+ atlasTile.on('tileerror',()=>{errors++;if(ticket===atlasLoadTicket&&errors>=3&&loaded===0){showMapStatus('Tile peta belum berhasil dimuat dari Esri. Periksa koneksi, tunggu beberapa saat, atau coba tombol Satelit. Data BMKG tetap dapat digunakan.');}});
+ atlasTile.on('load',()=>{if(ticket===atlasLoadTicket && loaded)showMapStatus('');});
  atlasTile.addTo(atlasMap);atlasTile.bringToBack();
 }
 function showAtlasDetail(html){$('#atlasDetail').innerHTML=html;}
@@ -164,25 +172,42 @@ function drawAtlas(){
  $('#markers-layer').disabled=!isCluster;
  $('#alpha-range').disabled=!isCluster;
 }
-function setupMap(){
- if(typeof L==='undefined'){
-  const frame=$('#atlasMap');
-  if(frame){frame.innerHTML='<div class="map-load-warning"><strong>Peta interaktif belum dapat dimuat.</strong><p>Periksa koneksi internet dan akses Leaflet/Esri. Data EarthAlert lainnya tetap tersedia.</p></div>';}
-  console.error('Leaflet dependency not loaded; check internet access/CDN policy.');
+async function ensureLeaflet(){
+ if(typeof window.L!=='undefined')return true;
+ for(const url of ['https://unpkg.com/leaflet@1.9.4/dist/leaflet.js','https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js']){
+  if(typeof window.L!=='undefined')return true;
+  try{await new Promise((resolve,reject)=>{
+   const s=document.createElement('script');s.src=url;s.async=true;
+   const timer=setTimeout(()=>{s.remove();reject(new Error('timeout'))},6500);
+   s.onload=()=>{clearTimeout(timer);resolve();};s.onerror=()=>{clearTimeout(timer);reject(new Error('CDN blocked'));};
+   document.head.appendChild(s);
+  });}catch(err){console.warn('Leaflet CDN fallback:',err.message);}
+ }
+ return typeof window.L!=='undefined';
+}
+async function setupMap(){
+ const holder=$('#atlasMap');
+ if(atlasMap)return;
+ showMapStatus('Memuat mesin peta interaktif…');
+ if(!(await ensureLeaflet())){
+  showMapStatus('');
+  holder.innerHTML='<div class="map-load-warning"><strong>Mesin peta belum dapat diakses.</strong><p>Leaflet diblokir jaringan atau ekstensi browser. Coba refresh, ubah koneksi, atau nonaktifkan pemblokir CDN untuk situs ini. Tab lain tetap berfungsi.</p><button type="button" id="retryMap">Coba lagi</button></div>';
+  $('#retryMap')?.addEventListener('click',()=>{holder.innerHTML='';setupMap();});
   return;
  }
- atlasMap=L.map('atlasMap',{
-  center:ATLAS_HOME.center,zoom:ATLAS_HOME.zoom,minZoom:0,maxZoom:19,
-  zoomControl:true,scrollWheelZoom:true,doubleClickZoom:true,
-  dragging:true,touchZoom:true,worldCopyJump:true,preferCanvas:true,
-  zoomSnap:0.25,zoomDelta:0.75,wheelPxPerZoomLevel:85
- });
- setBasemap();
- $('#zoomHome').addEventListener('click',()=>atlasMap.setView(ATLAS_HOME.center,ATLAS_HOME.zoom,{animate:true}));
- // Recompute the map viewport when users switch back from a hidden page.
- atlasMap.whenReady(()=>setTimeout(()=>atlasMap.invalidateSize(),70));
+ holder.innerHTML='';
+ try{
+  atlasMap=L.map(holder,{center:ATLAS_HOME.center,zoom:ATLAS_HOME.zoom,minZoom:0,maxZoom:19,zoomControl:true,
+   scrollWheelZoom:true,doubleClickZoom:true,dragging:true,touchZoom:true,worldCopyJump:true,preferCanvas:true,
+   zoomSnap:0.25,zoomDelta:0.75,wheelPxPerZoomLevel:85});
+  setBasemap();drawAtlas();
+  $('#zoomHome').addEventListener('click',()=>atlasMap.setView(ATLAS_HOME.center,ATLAS_HOME.zoom,{animate:true}));
+  atlasMap.whenReady(()=>{requestAnimationFrame(()=>atlasMap.invalidateSize());setTimeout(()=>atlasMap?.invalidateSize(),350);});
+  window.addEventListener('resize',()=>{if(state.tab==='atlas')atlasMap?.invalidateSize();},{passive:true});
+  if(typeof ResizeObserver!=='undefined')new ResizeObserver(()=>{if(state.tab==='atlas')requestAnimationFrame(()=>atlasMap?.invalidateSize());}).observe(holder);
+ }catch(err){console.error('Peta gagal diinisialisasi',err);showMapStatus('Peta gagal diinisialisasi: '+err.message);}
 }
-function navTo(tab){if(!$('#page-'+tab))tab='atlas';state.tab=tab;$$('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+tab));$$('[data-nav]').forEach(b=>b.classList.toggle('selected',b.dataset.nav===tab));history.replaceState(null,'','#'+tab);window.scrollTo({top:0,behavior:'instant'});if(tab==='atlas' && atlasMap)requestAnimationFrame(()=>atlasMap.invalidateSize());}
+function navTo(tab){if(!$('#page-'+tab))tab='atlas';state.tab=tab;$$('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+tab));$$('[data-nav]').forEach(b=>b.classList.toggle('selected',b.dataset.nav===tab));history.replaceState(null,'','#'+tab);window.scrollTo({top:0,behavior:'instant'});if(tab==='atlas' && atlasMap){requestAnimationFrame(()=>atlasMap.invalidateSize());setTimeout(()=>atlasMap?.invalidateSize(),230);}}
 function initAtlas(){
  $$('[data-nav]').forEach(b=>b.addEventListener('click',()=>navTo(b.dataset.nav)));
  $$('[data-basemap]').forEach(b=>b.addEventListener('click',()=>{state.basemap=b.dataset.basemap;$$('[data-basemap]').forEach(x=>x.classList.toggle('on',x===b));setBasemap()}));
@@ -192,7 +217,7 @@ function initAtlas(){
  $('#zone-layer').addEventListener('change',e=>{state.zones=e.target.checked;drawAtlas()});
  $('#markers-layer').addEventListener('change',e=>{state.markers=e.target.checked;drawAtlas()});
  document.addEventListener('click',e=>{if(e.target.closest('[data-show-news]')){document.querySelector('#atlas-news')?.scrollIntoView({behavior:'smooth'});return;}const button=e.target.closest('[data-select-case]');if(button){const c=DS.cases.find(x=>x.bmkg_catalog_id===button.dataset.selectCase);if(c){state.impactCase=c;navTo('dampak');showImpactDetail(c);renderImpact();}return;}const jump=e.target.closest('[data-jump]');if(jump)navTo(jump.dataset.jump);});
- setupMap();drawAtlas();showAtlasDetail(gridDetail(DS.grids.find(g=>g.c==='B'&&g.n>=30)||DS.grids[0]));
+ setupMap();showAtlasDetail(gridDetail(DS.grids.find(g=>g.c==='B'&&g.n>=30)||DS.grids[0]));
 }
 function showImpactDetail(c){$('#impact-detail').innerHTML=caseDetails(c,false)}
 function renderImpact(){const q=$('#impact-search').value.toLowerCase().trim(),year=$('#impact-year').value,cat=$('#impact-category').value;
@@ -278,23 +303,48 @@ function renderBMKGRows(entries){
  tbody.innerHTML=arr.slice(0,120).map(e=>`<tr><td>${safe([e.Tanggal,e.Jam].filter(Boolean).join(' ' )||e.tanggal||'—')}</td><td><strong>${safe(e.Magnitude||e.magnitude||'—')}</strong></td><td>${safe(e.Kedalaman||e.kedalaman||'—')}</td><td>${safe(e.Wilayah||e.wilayah||'—')}</td><td>${safe(e.Potensi||e.Dirasakan||e.potensi||e.dirasakan||e.category||'—')}</td></tr>`).join('');
 }
 async function initBMKG(){
- const setMsg=(msg)=>$('#bmkg-update').textContent=msg;
+ const setMsg=msg=>$('#bmkg-update').textContent=msg;
  let entries=[];
+ const URLS={gempa_terbaru:'https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json',m5:'https://data.bmkg.go.id/DataMKG/TEWS/gempaterkini.json',gempa_dirasakan:'https://data.bmkg.go.id/DataMKG/TEWS/gempadirasakan.json'};
+ const categoryName={gempa_terbaru:'Gempa terbaru',m5:'M5+',gempa_dirasakan:'Gempa dirasakan'};
  $('#bmkg-category').addEventListener('change',()=>renderBMKGRows(entries));
+ async function loadLocalFallback(){
+  const resp=await fetch('data/bmkg_snapshot.json?t='+Date.now(),{cache:'no-store'});
+  if(!resp.ok)throw new Error('Snapshot hosting tidak ditemukan');
+  const obj=await resp.json();const fresh=normalizeBMKGEntries(obj);
+  if(!fresh.length)throw new Error('Snapshot hosting belum berisi data');
+  entries=fresh;renderBMKGRows(entries);
+  setMsg('Menampilkan snapshot yang tersimpan pada hosting, dibuat '+(obj.fetched_at_utc||'tanggal tidak tersedia')+'. Ini bukan pembaruan real-time.');
+ }
  $('#bmkg-fetch-btn').addEventListener('click',async()=>{
-  setMsg('Memeriksa berkas snapshot BMKG yang tersedia pada hosting…');
+  const cat=$('#bmkg-category').value;
+  setMsg('Mencoba membaca '+categoryName[cat]+' dari BMKG Open Data…');
   try{
-    const r=await fetch('data/bmkg_snapshot.json?t='+Date.now(),{cache:'no-store'});
-    if(!r.ok) throw new Error('Berkas snapshot tidak tersedia');
-    const obj=await r.json();
-    const fresh=normalizeBMKGEntries(obj);
-    if(!fresh.length) throw new Error('Snapshot belum berisi kejadian');
-    entries=fresh;renderBMKGRows(entries);
-    setMsg('Snapshot tersimpan berhasil dimuat (pembaruan: '+(obj.fetched_at_utc||'belum diketahui')+'). Status ini bukan feed langsung dari BMKG.');
-  }catch(err){setMsg('Belum ada snapshot yang tersedia pada hosting. Impor berkas JSON resmi BMKG atau buka portal BMKG. '+err.message);}
-});
- $('#bmkg-import').addEventListener('change',async(ev)=>{const f=ev.target.files?.[0]; if(!f) return; try{const obj=JSON.parse(await f.text()); entries=normalizeBMKGEntries(obj,$('#bmkg-category').selectedOptions[0]?.textContent||'BMKG'); renderBMKGRows(entries); setMsg(`Berhasil mengimpor ${entries.length} entri dari file JSON lokal.`);}catch(err){setMsg('File JSON tidak dapat dibaca. Pastikan format mengikuti struktur BMKG Open Data.');}});
- try{const r=await fetch('data/bmkg_snapshot.json',{cache:'no-store'}); if(!r.ok) throw new Error('Tidak ada snapshot'); const obj=await r.json(); entries=normalizeBMKGEntries(obj); if(!entries.length) throw new Error('Snapshot kosong'); renderBMKGRows(entries); setMsg('Snapshot BMKG tersedia (pembaruan: '+(obj.fetched_at_utc||'belum diketahui')+'). Pilih kategori atau impor JSON bila diperlukan.'); }catch(err){ renderBMKGRows([]); setMsg('Snapshot BMKG belum tersedia pada hosting. Jalankan skrip pembaruan atau impor JSON resmi BMKG.'); }
+   const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),11000);
+   let r;try{r=await fetch(URLS[cat],{mode:'cors',cache:'no-store',signal:controller.signal});}finally{clearTimeout(timer);}
+   if(!r.ok)throw new Error('HTTP '+r.status);
+   const obj=await r.json(),fresh=normalizeBMKGEntries(obj,categoryName[cat]);
+   if(!fresh.length)throw new Error('Feed BMKG tidak memuat kejadian');
+   entries=entries.filter(e=>String(e.category)!==categoryName[cat]).concat(fresh);
+   renderBMKGRows(entries);
+   setMsg('Berhasil membaca '+fresh.length+' kejadian kategori '+categoryName[cat]+' langsung dari BMKG Open Data pada '+new Date().toLocaleString('id-ID')+'. Waktu resmi kejadian mengikuti isi JSON BMKG.');
+  }catch(err){
+   console.warn('Akses langsung BMKG tidak tersedia:',err.message);
+   try{await loadLocalFallback();setMsg($('#bmkg-update').textContent+' Akses langsung ke BMKG dibatasi ('+err.message+').');}
+   catch(error){if(entries.length){renderBMKGRows(entries);setMsg('Update langsung tidak tersedia ('+err.message+'). Data sebelumnya tetap ditampilkan. '+error.message+'.');}else{renderBMKGRows([]);setMsg('Update langsung tidak tersedia ('+err.message+'). '+error.message+'. Kamu tetap dapat memilih Impor JSON resmi BMKG.');}}
+  }
+ });
+ $('#bmkg-import').addEventListener('change',async(ev)=>{
+  const f=ev.target.files?.[0];if(!f)return;
+  try{
+   const obj=JSON.parse(await f.text());
+   const cat=$('#bmkg-category').value,name=categoryName[cat];const fresh=normalizeBMKGEntries(obj,name);
+   if(!fresh.length)throw new Error('JSON tidak memiliki kejadian BMKG');
+   entries=entries.filter(e=>String(e.category)!==name).concat(fresh);renderBMKGRows(entries);
+   setMsg('Berhasil mengimpor '+fresh.length+' entri kategori '+name+' dari file JSON. Data tidak dikirim ke server.');
+  }catch(err){setMsg('File JSON tidak dapat dibaca: '+err.message);}
+ });
+ try{await loadLocalFallback();}catch(err){renderBMKGRows([]);setMsg('Belum ada snapshot tersimpan. Pilih kategori dan klik Update untuk mencoba BMKG Open Data, atau impor JSON resmi.');}
 }
 function renderMetrics(){
  const root=$('#metric-chart'),rows=DS.metrics.filter(r=>r.k>=2),max=Math.max(...rows.map(r=>r.s));
