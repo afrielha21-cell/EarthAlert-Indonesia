@@ -6,14 +6,14 @@
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <meta content="#ffffff" name="theme-color"/>
 <meta content="EarthAlert: atlas karakteristik aktivitas kegempaan Indonesia 2016–2025 berbasis K-Means, dengan studi kasus dampak dan panduan mitigasi kontekstual." name="description"/>
-<title>EarthAlert V20 — Atlas Kegempaan &amp; Mitigasi Indonesia</title>
+<title>EarthAlert V21 — Atlas Kegempaan &amp; Mitigasi Indonesia</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" crossorigin="anonymous" onerror="this.onerror=null;this.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'"/>
-<link href="styles.css?v=20.0" rel="stylesheet"/>
+<link href="styles.css?v=21.0" rel="stylesheet"/>
 <!-- Leaflet dimuat tanpa memblokir fitur lain melalui ensureLeaflet() dalam app.js -->
-<script defer src="app.js?v=20.0"></script>
+<script defer src="app.js?v=21.0"></script>
 </head>
 <body>
 <header class="masthead">
@@ -35,7 +35,7 @@
 <span class="head-tag">SCIENCE HUNTER INDONESIA <small style="font-size:9px;opacity:.68">V19</small></span>
 </div>
 </header>
-<main class="shell" data-earthalert-version="20.0">
+<main class="shell" data-earthalert-version="21.0">
 <div class="site-status" id="site-status" role="status">Memuat data riset EarthAlert…</div>
 <section aria-labelledby="atlasTitle" class="page active" id="page-atlas">
 <div class="page-head"><div><div class="eyebrow">ATLAS ML / INDONESIA 2016—2025</div><h1 id="atlasTitle">Membaca pola kegempaan, <span>bukan sekadar melihat titik.</span></h1><p>Peta interaktif K-Means dari katalog BMKG 2016–2025 dengan tiga indikator: frekuensi, magnitudo P90, dan kedalaman. Telusuri zona heksagon, titik episenter, atau kasus dampak historis.</p></div></div>
@@ -85,7 +85,20 @@
 <section aria-labelledby="bmkgTitle" class="page" id="page-bmkg" hidden><div class="page-head compact"><div><div class="eyebrow">SUMBER INFORMASI RESMI</div><h1 id="bmkgTitle">Gempa Terkini BMKG</h1><p>Tampilan snapshot kejadian resmi dari BMKG Open Data, <strong>terpisah dari arsip historis dan pemodelan K-Means</strong>. Waktu pembaruan ditampilkan apa adanya.</p></div></div><section class="context-panel bmkg-panel"><div class="bmkg-panel-head"><div class="overline">AKSES DATA BMKG</div><h2>Snapshot informasi gempa terbaru</h2><p class="muted">Klik Update untuk mencoba membaca feed resmi BMKG Open Data sesuai kategori. Jika browser membatasi akses lintas situs, sistem mencoba snapshot yang tersedia di hosting atau kamu dapat mengimpor JSON resmi BMKG. Fitur ini bukan pengambilan data historis RepoGempa.</p></div><div class="bmkg-toolbar"><div class="bmkg-toolbar-row"><label for="bmkg-category">Kategori:</label><select id="bmkg-category"><option value="gempa_terbaru">Gempa terbaru</option><option value="m5">Gempa M≥5</option><option value="gempa_dirasakan">Gempa dirasakan</option></select><button class="btn-lite" id="bmkg-fetch-btn" type="button">Update</button><span class="or-label">ATAU IMPOR JSON</span><input accept=".json,application/json" id="bmkg-import" type="file"/></div></div><div class="bmkg-status-line" id="bmkg-update">Pilih kategori lalu klik Update. Jika akses langsung dibatasi, snapshot hosting dan impor JSON tetap tersedia.</div><div class="bmkg-table-wrap"><table class="bmkg-table"><thead><tr><th>Waktu</th><th>Magnitude</th><th>Kedalaman</th><th>Wilayah</th><th>Potensi / Dirasakan</th></tr></thead><tbody id="bmkg-tbody"><tr><td colspan="5">Belum ada data — jalankan server lokal atau impor JSON.</td></tr></tbody></table></div><div class="bmkg-footnote">Referensi dan atribusi: <a href="https://data.bmkg.go.id/gempabumi/" rel="noopener noreferrer" target="_blank">BMKG Open Data ↗</a>. Status resmi gempabumi dan tsunami selalu mengikuti BMKG/InaTEWS, bukan EarthAlert.</div></section></section>
 
 <section aria-labelledby="metTitle" class="page" id="page-metodologi" hidden><div class="page-head compact"><div><div class="eyebrow">TRANSPARANSI PENELITIAN</div><h1 id="metTitle">Metodologi dan sumber data.</h1><p>Semua angka dan batasan sistem dijelaskan agar hasil dapat diuji ulang, bukan hanya dilihat sebagai visualisasi.</p></div></div><div class="methods-grid"><section class="context-panel"><div class="overline">ALUR ANALISIS 2016–2025</div><h2>K-Means dari katalog BMKG</h2><ol class="steps"><li>Ekspor katalog RepoGempa BMKG dan audit ID, tanggal, magnitudo, kedalaman, serta lokasi.</li><li>Gunakan 2016–2025 untuk pemodelan 10 tahun kalender; 2026 hanya untuk tab riwayat.</li><li>Uji batas magnitudo M≥3 dan M≥4; skenario atlas utama memakai M≥4.</li><li>Agregasi kejadian pada heksagon luas setara beradius 65 km, minimal 10 rekaman per sel.</li><li>Hitung frekuensi, magnitudo P90, median kedalaman; transformasi log untuk frekuensi dan kedalaman, lalu StandardScaler.</li><li>Uji k=2–8 melalui WCSS/Elbow, Silhouette, Davies-Bouldin, ukuran kelompok dan ARI leave-one-year-out.</li><li>Tampilkan profil empat klaster, bukti kejadian, dan edukasi mitigasi pada lapisan berbeda.</li></ol></section>
-<section class="context-panel"><div class="overline">PENENTUAN JUMLAH KLASTER</div><h2>Evaluasi k=2 sampai k=8</h2><div class="metric-chart" id="metric-chart"></div><p class="muted small">Pada skenario heksagon M≥4, k=4 menghasilkan Silhouette 0,347 dan Davies–Bouldin 0,946. Median ARI penghilangan satu tahun ≈0,810. k=6 hampir setara pada Silhouette, tetapi menghasilkan kelompok sangat kecil. Hasil adalah profil seismisitas, bukan kelas risiko.</p></section>
+<section class="context-panel"><div class="overline">PENENTUAN JUMLAH KLASTER</div><h2>Evaluasi k=2 sampai k=8</h2><div class="metric-comparison" role="group" aria-label="Perbandingan evaluasi jumlah klaster">
+<div class="metric-panel">
+<h3 class="metric-panel-title">Silhouette Score</h3>
+<p class="metric-panel-subtitle">Semakin tinggi, pemisahan klaster semakin baik.</p>
+<div class="metric-chart" id="metric-chart"></div>
+<p class="metric-chart-note">Nilai tertinggi pada k=4 (0,347). k=6 mendekati nilai tersebut, tetapi menghasilkan kelompok yang sangat kecil.</p>
+</div>
+<div class="metric-panel">
+<h3 class="metric-panel-title">Elbow (WCSS)</h3>
+<p class="metric-panel-subtitle">Penurunan WCSS menurut jumlah klaster.</p>
+<div class="elbow-chart" id="elbow-chart"></div>
+<p class="metric-chart-note">Berdasarkan WCSS model BMKG yang sama. k=4 ditandai; pemilihan model tetap mempertimbangkan metrik lainnya.</p>
+</div>
+</div><p class="muted small">Pada skenario heksagon M≥4, k=4 menghasilkan Silhouette 0,347 dan Davies–Bouldin 0,946. Median ARI penghilangan satu tahun ≈0,810. k=6 hampir setara pada Silhouette, tetapi menghasilkan kelompok sangat kecil. Hasil adalah profil seismisitas, bukan kelas risiko.</p></section>
 <section class="context-panel profile-method-panel"><div class="overline">PROFIL EMPIRIS</div><h2>Empat kelompok heksagon</h2><div class="profile-table-wrap"><table class="profile-method-table"><thead><tr><th>Klaster</th><th>Heksagon</th><th>Median jumlah M≥4</th><th>Median P90 magnitudo</th><th>Median kedalaman</th></tr></thead><tbody id="method-profiles"></tbody></table></div><p class="muted small">Angka median dihitung antarsel per klaster; tidak diurutkan sebagai tingkat bahaya atau tingkat keselamatan.</p></section>
 <section class="context-panel"><div class="overline">KUALITAS DATA &amp; BATASAN</div><h2>Arsip dengan keterbatasan yang terbuka</h2><p><strong>126.686</strong> rekaman BMKG sepanjang 2016–2025 dan <strong>138.229</strong> rekaman hingga 12 Oktober 2026 digunakan sesuai kegunaan masing-masing. Terdapat <strong>52 tanggal tanpa rekaman ekspor</strong> yang ditandai tidak tersedia, bukan nol gempa.</p><p>Lonjakan rekaman tahun 2025—khususnya M&lt;3—dan ketidakseragaman katalog dapat memengaruhi frekuensi. Perbedaan skala magnitudo tidak dapat diuji penuh karena tipe magnitudo sering kosong pada ekspor.</p><p>Warna heksagon mencerminkan kemiripan tiga indikator <strong>bukan peta bahaya resmi, prakiraan kejadian, prediksi kerusakan, atau kategori wilayah aman</strong>. Arsip dampak dan tsunami hanya menjadi konteks historis yang terpisah dari pelatihan model.</p></section>
 <section class="context-panel"><div class="overline">REFERENSI RESMI</div><h2>Sumber data dan pedoman mitigasi</h2><div class="links-list"><a href="https://repogempa.bmkg.go.id/eventcatalog" rel="noopener noreferrer" target="_blank">RepoGempa BMKG · katalog historis ↗</a><a href="https://data.bmkg.go.id/gempabumi/" rel="noopener noreferrer" target="_blank">BMKG Open Data · kejadian terkini ↗</a><a href="https://www.bmkg.go.id/gempabumi/mitigasi/antisipasi-gempabumi" rel="noopener noreferrer" target="_blank">Pedoman keselamatan BMKG ↗</a><a href="https://www.bmkg.go.id/gempabumi/mitigasi/edukasi-gempabumi-tsunami" rel="noopener noreferrer" target="_blank">Edukasi tsunami BMKG ↗</a><a href="https://inarisk.bnpb.go.id/" rel="noopener noreferrer" target="_blank">InaRISK BNPB (kajian risiko terpisah) ↗</a></div></section></div></section>
