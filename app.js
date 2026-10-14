@@ -8,6 +8,45 @@ const labels={A:'Kedalaman relatif rendah',B:'Magnitudo P90 relatif tinggi',C:'K
 const SRC_BMKG='https://www.bmkg.go.id/gempabumi/mitigasi/antisipasi-gempabumi';
 const SRC_BMKG_EDU='https://www.bmkg.go.id/gempabumi/mitigasi/edukasi-gempabumi-tsunami';
 const dist=(a,b,c,d)=>{const r=Math.PI/180,dy=(c-a)*r,dx=(d-b)*r,x=Math.sin(dy/2)**2+Math.cos(a*r)*Math.cos(c*r)*Math.sin(dx/2)**2;return 6371*2*Math.asin(Math.sqrt(Math.min(1,x)))};
+
+const LOC_TRANSLATE=[[/\bSouthern\b/gi,'Selatan'],[/\bNorthern\b/gi,'Utara'],[/\bWestern\b/gi,'Barat'],[/\bEastern\b/gi,'Timur'],[/\bCentral\b/gi,'Tengah'],[/\bSouthwest\b/gi,'Barat Daya'],[/\bSoutheast\b/gi,'Tenggara'],[/\bNorthwest\b/gi,'Barat Laut'],[/\bNortheast\b/gi,'Timur Laut'],[/\bSea\b/gi,'Laut'],[/\bStrait\b/gi,'Selat'],[/\bGulf\b/gi,'Teluk'],[/\bof\b/gi,''],[/,\s*Indonesia/gi,''],[/\bMolucca\b/gi,'Maluku'],[/\bCelebes\b/gi,'Sulawesi'],[/\bBorneo\b/gi,'Kalimantan'],[/\bIrian Jaya\b/gi,'Papua']];
+function normalizeLocText(s=''){
+ let out=String(s||'').replace(/^Kab\.?\s*/i,'Kabupaten ').replace(/^Kota\s*/i,'Kota ');
+ for(const [a,b] of LOC_TRANSLATE)out=out.replace(a,b);
+ return out.replace(/\s{2,}/g,' ').replace(/\s+,/g,',').replace(/,+$/,'').trim()||'Wilayah belum teridentifikasi';
+}
+function broadRegionName(lat,lon){
+ if(lat<-8.2&&lon>114&&lon<125)return 'Laut Selatan Bali–Nusa Tenggara';
+ if(lat<-6&&lon>=105&&lon<=114)return 'Laut Selatan Jawa';
+ if(lat>0.2&&lon<100.5)return 'Perairan Barat Aceh';
+ if(lat>-3&&lat<6&&lon>=95&&lon<106)return 'Pesisir Barat Sumatra';
+ if(lat>-5&&lat<2&&lon>=106&&lon<110)return 'Selat Sunda dan sekitarnya';
+ if(lat>-3.5&&lat<3.5&&lon>=108&&lon<120)return 'Laut Jawa dan Kalimantan';
+ if(lat>-6&&lat<2&&lon>=120&&lon<125)return 'Sulawesi Tenggara dan sekitarnya';
+ if(lat>1&&lon>=119&&lon<127)return 'Sulawesi Utara dan Laut Maluku';
+ if(lat<-2&&lon>=124&&lon<131)return 'Laut Banda dan Maluku';
+ if(lon>=131)return lat<0?'Papua bagian selatan':'Papua dan sekitarnya';
+ return 'Wilayah Indonesia';
+}
+function inferGridLocation(g){
+ const byCase=(DS.cases||[]).map(c=>({d:dist(g.lat,g.lon,Number(c.lat),Number(c.lon)),name:c.bmkg_place,src:'Kasus BMKG'})).filter(c=>Number.isFinite(c.d)).sort((a,b)=>a.d-b.d)[0];
+ if(byCase&&byCase.d<=180)return {title:normalizeLocText(byCase.name),subtitle:'Rujukan lokasi terdekat · '+byCase.src};
+ const byEvent=(DS.events||[]).map(e=>({d:dist(g.lat,g.lon,Number(e.lat),Number(e.lon)),name:e.p,src:'Riwayat BMKG'})).filter(e=>Number.isFinite(e.d)).sort((a,b)=>a.d-b.d)[0];
+ if(byEvent&&byEvent.d<=220)return {title:normalizeLocText(byEvent.name),subtitle:'Rujukan lokasi terdekat · '+byEvent.src};
+ return {title:broadRegionName(g.lat,g.lon),subtitle:'Label wilayah perkiraan dari posisi heksagon'};
+}
+function ensureGridLocations(){
+ if(!(DS.grids||[]).length)return;
+ DS.grids.forEach(g=>{if(!g.place_info)g.place_info=inferGridLocation(g);});
+}
+function getGridTitle(g){ensureGridLocations();return g.place_info?.title||'Zona '+g.id;}
+function updateMapPlaceBadge(g){
+ const el=$('#mapPlaceBadge');if(!el)return;
+ if(!g){el.textContent='Lokasi zona akan muncul di sini';return;}
+ ensureGridLocations();
+ const p=g.place_info||{};
+ el.innerHTML='<strong>Lokasi zona</strong>'+safe(p.title||g.id)+'<span class="small">'+safe(p.subtitle||('ID zona '+g.id))+'</span>';
+}
 const state={tab:'atlas',basemap:'ocean',mode:'clusters',cluster:'all',transparency:75,zones:true,markers:true,selected:null,scenario:'hunian',impactCase:null,tsCase:null,historyRow:null};
 let DS={};
 const HISTORY_CACHE=new Map();
@@ -88,11 +127,20 @@ function renderNews(zone=null){
 }
 function gridDetail(g){
  const examples=comparableCases({lat:g.lat,lon:g.lon,mag:g.m,depth:g.depth});
+ ensureGridLocations();
+ const place=g.place_info||inferGridLocation(g);
+ updateMapPlaceBadge(g);
  renderNews(g);
- return `<div class="overline">ATLAS ML · HEKSAGON BMKG 2016–2025</div><h2>Zona ${safe(g.id)}</h2><span class="pill">Klaster ${safe(g.c)} · ${safe(labels[g.c])}</span>
- <div class="fact-grid"><div class="fact"><label>FREKUENSI GEMPA M≥4</label><strong>${fmt(g.n)} kejadian</strong></div><div class="fact"><label>MAGNITUDO P90</label><strong>M ${fmt(g.m,2)}</strong></div><div class="fact"><label>MEDIAN KEDALAMAN</label><strong>${fmt(g.depth,1)} km</strong></div><div class="fact"><label>RERATA TERCATAT / TAHUN</label><strong>${fmt(g.annual,1)} kejadian</strong></div></div>
- <div class="note">Sel berukuran sekitar 65 km (radius heksagon), memakai kejadian M≥4 pada 2016–2025. Warna menjelaskan pola relatif tiga indikator, <strong>bukan ranking bahaya</strong>. Frekuensi belum dikoreksi untuk kekosongan katalog dan perubahan kelengkapan pencatatan.</div>
- ${comparatorHtml(examples)}<div class="small-actions"><a class="action-link" href="#atlas-news" data-show-news="true">Lihat kajian BMKG terkait ↓</a><button class="plain-button" data-jump="mitigasi">Buka panduan mitigasi →</button></div>`;
+ return '<div class="overline">HASIL ANALISIS</div><div class="detail-subbrand">EarthAlert</div>'+
+ '<h2>'+safe(place.title)+'</h2><div class="location-chip"><span class="dot"></span>Lokasi zona analisis</div>'+
+ '<div class="minor-id">ID zona '+safe(g.id)+' · Titik pusat '+fmt(g.lat,2)+'°, '+fmt(g.lon,2)+'°</div>'+
+ '<span class="pill">Klaster '+safe(g.c)+' · '+safe(labels[g.c])+'</span>'+
+ '<div class="fact-grid"><div class="fact"><label>FREKUENSI GEMPA M≥4</label><strong>'+fmt(g.n)+' kejadian</strong></div>'+
+ '<div class="fact"><label>MAGNITUDO P90</label><strong>M '+fmt(g.m,2)+'</strong></div>'+
+ '<div class="fact"><label>MEDIAN KEDALAMAN</label><strong>'+fmt(g.depth,1)+' km</strong></div>'+
+ '<div class="fact"><label>RERATA TERCATAT / TAHUN</label><strong>'+fmt(g.annual,1)+' kejadian</strong></div></div>'+
+ '<div class="note">'+safe(place.subtitle||'Lokasi terdekat di sekitar heksagon analisis')+'. Sel berukuran sekitar 65 km (radius heksagon), memakai kejadian M≥4 pada 2016–2025. Warna menjelaskan pola relatif tiga indikator, <strong>bukan ranking bahaya</strong>.</div>'+
+ comparatorHtml(examples)+'<div class="small-actions"><a class="action-link" href="#atlas-news" data-show-news="true">Lihat kajian BMKG terkait ↓</a><button class="plain-button" data-jump="mitigasi">Buka panduan mitigasi →</button></div>';
 }
 function eventDetail(e){
  const similar=comparableCases({lat:e.lat,lon:e.lon,mag:e.m,depth:e.dep});
@@ -138,13 +186,13 @@ function drawAtlas(){
     hex.on('click',()=>showAtlasDetail(gridDetail(g)));
     hex.on('mouseover',()=>{hex.setStyle({weight:2.7,opacity:1});hex.bringToFront()});
     hex.on('mouseout',()=>hex.setStyle({weight:1.3,opacity:.85}));
-    hex.bindTooltip(`Zona ${safe(g.id)} · ${safe(labels[g.c])}`,{sticky:true,direction:'top'});
+    hex.bindTooltip(`${safe(getGridTitle(g))} · Klaster ${safe(g.c)}`,{sticky:true,direction:'top'});
     atlasOverlay.addLayer(hex);
    }
    if(state.markers){
     const dot=L.circleMarker([g.lat,g.lon],{radius:Math.max(3,Math.min(9,2.3+Math.sqrt(g.n)*0.35)),color:'#fff',weight:1,fillColor:col,fillOpacity:.95});
     dot.on('click',()=>showAtlasDetail(gridDetail(g)));
-    dot.bindTooltip(`Klaster ${safe(g.c)} · ${fmt(g.n)} gempa`,{direction:'top'});
+    dot.bindTooltip(`${safe(getGridTitle(g))} · ${fmt(g.n)} gempa`,{direction:'top'});
     atlasOverlay.addLayer(dot);
    }
   }
@@ -243,7 +291,7 @@ function initAtlas(){
  $('#zone-layer').addEventListener('change',e=>{state.zones=e.target.checked;drawAtlas()});
  $('#markers-layer').addEventListener('change',e=>{state.markers=e.target.checked;drawAtlas()});
  document.addEventListener('click',e=>{if(e.target.closest('[data-show-news]')){document.querySelector('#atlas-news')?.scrollIntoView({behavior:'smooth'});return;}const button=e.target.closest('[data-select-case]');if(button){const c=DS.cases.find(x=>x.bmkg_catalog_id===button.dataset.selectCase);if(c){state.impactCase=c;navTo('dampak');showImpactDetail(c);renderImpact();}return;}const jump=e.target.closest('[data-jump]');if(jump)navTo(jump.dataset.jump);});
- setupMap();showAtlasDetail(gridDetail(DS.grids.find(g=>g.c==='B'&&g.n>=30)||DS.grids[0]));
+ ensureGridLocations();const firstGrid=DS.grids.find(g=>g.c==='B'&&g.n>=30)||DS.grids[0];setupMap();showAtlasDetail(gridDetail(firstGrid));updateMapPlaceBadge(firstGrid);
 }
 function showImpactDetail(c){$('#impact-detail').innerHTML=caseDetails(c,false)}
 function renderImpact(){const q=$('#impact-search').value.toLowerCase().trim(),year=$('#impact-year').value,cat=$('#impact-category').value;
@@ -391,6 +439,7 @@ function renderMetrics(){
 }
 async function boot(){try{
  const names=['grids','events','cases','tsunami','metrics','profiles','year','metadata','news','history_counts'];const files=await Promise.all(names.map(async n=>{const r=await fetch(`data/${n}.json`);if(!r.ok)throw new Error(`Berkas ${n}.json tidak dapat dimuat.`);return r.json()}));names.forEach((n,i)=>DS[n]=files[i]);
+ ensureGridLocations();
  repairAtlasStructure();navTo(location.hash.replace('#','')==='usgs'?'riwayat':location.hash.replace('#','')||'atlas');initAtlas();initHistory();initImpact();initMitigation();initTsunami();initBMKG();renderMetrics();
  }catch(err){const s=$('#site-status');s.textContent='Data belum berhasil dimuat: '+err.message+' Jalankan situs melalui server HTTP (atau deploy), jangan membuka index.html langsung dengan file://';s.className='site-status visible error';console.error(err);}}
 window.addEventListener('hashchange',()=>{
