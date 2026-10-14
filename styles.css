@@ -133,3 +133,29 @@
 .location-chip .dot{width:8px;height:8px;border-radius:999px;background:#0d8aa0;display:inline-block}
 .minor-id{margin-top:-.15rem;margin-bottom:.9rem;font-size:.88rem;color:#6d8698}
 @media (max-width:720px){.map-place-badge{max-width:170px;font-size:.74rem;padding:7px 9px}}
+
+
+/* V21 — Atlas result title and side-by-side model evaluation charts. */
+#atlasDetail .atlas-result-title{font-size:1.68rem!important;line-height:1.22;font-weight:800;letter-spacing:.065em;color:#12677d;margin:0 0 6px}
+#atlasDetail .detail-subbrand{font-size:.84rem;line-height:1.4;font-weight:700;margin:0 0 12px;color:#557284}
+#mapPlaceBadge .small{display:none!important}
+.metric-comparison{display:grid;grid-template-columns:minmax(0,1.36fr) minmax(0,1fr);gap:20px;margin:18px 0 12px;align-items:stretch}
+.metric-panel{min-width:0;border:1px solid #e0eaf0;border-radius:14px;padding:15px 14px 13px;background:#fcfefe}
+.metric-panel-title{font-size:12px;font-weight:800;letter-spacing:.015em;color:#1b4356;margin:0 0 5px}
+.metric-panel-subtitle{font-size:10px;color:#6f8998;margin:0}
+.metric-panel .metric-chart{margin-top:8px;height:168px}
+.metric-panel .metrics-board{width:100%;height:100%;display:flex;align-items:flex-end;gap:4px}
+.metric-panel .metric-bar{min-width:0;flex:1}
+.metric-panel .metric-bar .bar{width:70%}
+.metric-chart-note{font-size:10px;color:#647f8f;line-height:1.6;margin:12px 0 0}
+.elbow-chart{width:100%;height:184px;min-width:0;overflow:hidden;margin-top:5px}
+.elbow-chart svg{width:100%;height:100%;display:block;overflow:visible}
+.elbow-axis{font-size:10px;fill:#647f8f;font-family:Poppins,'Segoe UI',sans-serif}
+.elbow-grid{stroke:#e5edf1;stroke-width:1;stroke-dasharray:3 4}
+.elbow-line{fill:none;stroke:#0e8695;stroke-width:2.7;stroke-linecap:round;stroke-linejoin:round}
+.elbow-point{fill:#8fbfc9;stroke:#fff;stroke-width:1.4}
+.elbow-point.is-selected{fill:#0c8192;stroke:#fff;stroke-width:2.1}
+.elbow-selection{stroke:#1595a4;stroke-width:1.35;stroke-dasharray:4 4;opacity:.85}
+.elbow-number{font-size:10px;font-weight:700;fill:#0d7082;font-family:Poppins,'Segoe UI',sans-serif}
+@media (max-width:780px){.metric-comparison{grid-template-columns:1fr;gap:12px}.elbow-chart{height:215px}}
+@media (max-width:480px){#atlasDetail .atlas-result-title{font-size:1.54rem!important}.metric-panel{padding:12px 9px}.metric-panel .metric-chart{height:156px}}
