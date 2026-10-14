@@ -45,7 +45,7 @@ function updateMapPlaceBadge(g){
  if(!g){el.textContent='Lokasi zona akan muncul di sini';return;}
  ensureGridLocations();
  const p=g.place_info||{};
- el.innerHTML='<strong>Lokasi zona</strong>'+safe(p.title||g.id)+'<span class="small">'+safe(p.subtitle||('ID zona '+g.id))+'</span>';
+ el.innerHTML='<strong>Lokasi zona</strong>'+safe(p.title||g.id);
 }
 const state={tab:'atlas',basemap:'ocean',mode:'clusters',cluster:'all',transparency:75,zones:true,markers:true,selected:null,scenario:'hunian',impactCase:null,tsCase:null,historyRow:null};
 let DS={};
@@ -433,9 +433,39 @@ async function initBMKG(){
  try{await loadLocalFallback();}catch(err){renderBMKGRows([]);setMsg('Belum ada snapshot tersimpan. Pilih kategori dan klik Update untuk mencoba BMKG Open Data, atau impor JSON resmi.');}
 }
 function renderMetrics(){
- const root=$('#metric-chart'),rows=DS.metrics.filter(r=>r.k>=2),max=Math.max(...rows.map(r=>r.s));
- root.innerHTML=`<div class="metrics-board">${rows.map(r=>`<div class="metric-bar ${r.k===4?'active':''}" title="k=${r.k}; Silhouette=${fmt(r.s,3)}; WCSS=${fmt(r.w,1)}; DBI=${fmt(r.dbi,3)}"><span>${fmt(r.s,3)}</span><div class="bar" style="height:${Math.max(14,r.s/max*113)}px"></div><b>k=${r.k}</b></div>`).join('')}</div><p class="muted small">Grafik: Silhouette Score. Nilai tertinggi k=4 (${fmt(DS.metrics.find(m=>m.k===4).s,3)}). Evaluasi WCSS/Elbow dan Davies–Bouldin tersedia pada data/metrics.json. k=6 mendekati skor ini tetapi menghasilkan kelompok terkecil 6 heksagon.</p>`;
- const body=$('#method-profiles');if(body){body.innerHTML=DS.profiles.map(p=>`<tr><td><strong style="color:${colors[p.c]}">${p.c}</strong> — ${safe(p.name)}</td><td>${fmt(p.grids)}</td><td>${fmt(p.count_median)}</td><td>${fmt(p.p90_median,2)}</td><td>${fmt(p.depth_median,1)} km</td></tr>`).join('');}
+ const root=$('#metric-chart');
+ const all=DS.metrics.filter(r=>Number.isFinite(Number(r.w))).slice().sort((a,b)=>a.k-b.k);
+ const rows=all.filter(r=>r.k>=2&&Number.isFinite(Number(r.s)));
+ const maxS=Math.max(...rows.map(r=>Number(r.s)));
+ root.innerHTML='<div class="metrics-board">'+rows.map(r=>'<div class="metric-bar '+(r.k===4?'active':'')+'" title="k='+r.k+'; Silhouette='+fmt(r.s,3)+'; WCSS='+fmt(r.w,1)+'; DBI='+fmt(r.dbi,3)+'"><span>'+fmt(r.s,3)+'</span><div class="bar" style="height:'+Math.max(14,Number(r.s)/maxS*113)+'px"></div><b>k='+r.k+'</b></div>').join('')+'</div>';
+ const target=$('#elbow-chart');
+ if(target&&all.length>=2){
+  const W=360,H=200,left=45,right=14,top=20,bottom=32;
+  const minW=Math.min(...all.map(r=>Number(r.w)));
+  const maxW=Math.max(...all.map(r=>Number(r.w)));
+  const firstK=all[0].k,lastK=all[all.length-1].k;
+  const plotW=W-left-right,plotH=H-top-bottom;
+  const x=k=>left+(Number(k)-firstK)/(lastK-firstK)*plotW;
+  const y=w=>top+(maxW-Number(w))/(maxW-minW||1)*plotH;
+  const grid=[0,0.5,1].map(t=>{
+    const yy=top+t*plotH,ww=maxW-t*(maxW-minW);
+    return '<line class="elbow-grid" x1="'+left+'" x2="'+(W-right)+'" y1="'+yy+'" y2="'+yy+'"/>'+
+      '<text class="elbow-axis" x="'+(left-7)+'" y="'+(yy+4)+'" text-anchor="end">'+fmt(ww,0)+'</text>';
+  }).join('');
+  const path=all.map((r,i)=>(i?'L':'M')+x(r.k).toFixed(1)+' '+y(r.w).toFixed(1)).join(' ');
+  const selected=all.find(r=>r.k===4);
+  const selectedX=selected?x(4):null;
+  const selection=selected?'<line class="elbow-selection" x1="'+selectedX+'" x2="'+selectedX+'" y1="'+top+'" y2="'+(H-bottom)+'"/>'+
+   '<text class="elbow-number" x="'+(selectedX+5)+'" y="'+(top+9)+'">k=4</text>':'';
+  const points=all.map(r=>'<circle class="elbow-point '+(r.k===4?'is-selected':'')+'" cx="'+x(r.k).toFixed(1)+'" cy="'+y(r.w).toFixed(1)+'" r="'+(r.k===4?5.5:4.1)+'"><title>k='+r.k+'; WCSS='+fmt(r.w,3)+'</title></circle>').join('');
+  const labels=all.map(r=>'<text class="elbow-axis" x="'+x(r.k).toFixed(1)+'" y="'+(H-10)+'" text-anchor="middle">'+r.k+'</text>').join('');
+  target.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Grafik Elbow WCSS untuk k 1 hingga 8 dari hasil K-Means BMKG 2016 hingga 2025. K empat ditandai sebagai model terpilih.">'+
+   '<title>Elbow WCSS: semakin kecil WCSS semakin kompak klaster; siku dinilai bersama metrik lainnya.</title>'+
+   grid+'<path class="elbow-line" d="'+path+'"/>'+selection+points+labels+
+   '<text class="elbow-axis" x="'+(W-right-2)+'" y="'+(H-1)+'" text-anchor="end">Jumlah klaster (k)</text></svg>';
+ }
+ const body=$('#method-profiles');
+ if(body)body.innerHTML=DS.profiles.map(p=>'<tr><td><strong style="color:'+colors[p.c]+'">'+p.c+'</strong> — '+safe(p.name)+'</td><td>'+fmt(p.grids)+'</td><td>'+fmt(p.count_median)+'</td><td>'+fmt(p.p90_median,2)+'</td><td>'+fmt(p.depth_median,1)+' km</td></tr>').join('');
 }
 async function boot(){try{
  const names=['grids','events','cases','tsunami','metrics','profiles','year','metadata','news','history_counts'];const files=await Promise.all(names.map(async n=>{const r=await fetch(`data/${n}.json`);if(!r.ok)throw new Error(`Berkas ${n}.json tidak dapat dimuat.`);return r.json()}));names.forEach((n,i)=>DS[n]=files[i]);
