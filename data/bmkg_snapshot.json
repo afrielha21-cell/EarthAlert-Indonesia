@@ -1,21 +1,21 @@
 {
-  "fetched_at_utc": "2026-10-15T07:26:23+00:00",
+  "fetched_at_utc": "2026-10-15T13:26:05+00:00",
   "feeds": {
     "gempa_terbaru": {
       "Infogempa": {
         "gempa": {
-          "Tanggal": "14 Okt 2026",
-          "Jam": "17:30:57 WIB",
-          "DateTime": "2026-10-14T10:30:57+00:00",
-          "Coordinates": "-8.14,120.56",
-          "Lintang": "8.14 LS",
-          "Bujur": "120.56 BT",
-          "Magnitude": "3.8",
-          "Kedalaman": "10 km",
-          "Wilayah": "Pusat gempa berada di laut 53 km utara Ruteng, Manggarai",
+          "Tanggal": "15 Okt 2026",
+          "Jam": "17:58:23 WIB",
+          "DateTime": "2026-10-15T10:58:23+00:00",
+          "Coordinates": "-6.73,106.61",
+          "Lintang": "6.73 LS",
+          "Bujur": "106.61 BT",
+          "Magnitude": "4.1",
+          "Kedalaman": "5 km",
+          "Wilayah": "Pusat gempa berada di darat 26 km barat daya kota Bogor",
           "Potensi": "Gempa ini dirasakan untuk diteruskan pada masyarakat",
-          "Dirasakan": "II - III Kab. Manggarai",
-          "Shakemap": "20261014173057.mmi.jpg"
+          "Dirasakan": "IV Pamijahan, IV Kabandungan",
+          "Shakemap": "20261015175823.mmi.jpg"
         }
       }
     },
@@ -209,6 +209,30 @@
       "Infogempa": {
         "gempa": [
           {
+            "Tanggal": "15 Okt 2026",
+            "Jam": "17:58:23 WIB",
+            "DateTime": "2026-10-15T10:58:23+00:00",
+            "Coordinates": "-6.73,106.61",
+            "Lintang": "6.73 LS",
+            "Bujur": "106.61 BT",
+            "Magnitude": "4.1",
+            "Kedalaman": "5 km",
+            "Wilayah": "Pusat gempa berada di darat 26 km barat daya kota Bogor",
+            "Dirasakan": "IV Pamijahan, IV Kabandungan"
+          },
+          {
+            "Tanggal": "15 Okt 2026",
+            "Jam": "17:49:43 WIB",
+            "DateTime": "2026-10-15T10:49:43+00:00",
+            "Coordinates": "-6.77,106.60",
+            "Lintang": "6.77 LS",
+            "Bujur": "106.60 BT",
+            "Magnitude": "3.5",
+            "Kedalaman": "10 km",
+            "Wilayah": "Pusat gempa berada di darat 25 km utara Kab. Sukabumi",
+            "Dirasakan": "III Kalapanunggal, III Leuwiliang, III Cipeuteuy"
+          },
+          {
             "Tanggal": "14 Okt 2026",
             "Jam": "17:30:57 WIB",
             "DateTime": "2026-10-14T10:30:57+00:00",
@@ -363,30 +387,6 @@
             "Kedalaman": "16 km",
             "Wilayah": "Pusat gempa berada di darat 5 km selatan Pasaman",
             "Dirasakan": "II - III Kota Padang Panjang, II - III Kota Bukittinggi, III Kabupaten Pasaman"
-          },
-          {
-            "Tanggal": "10 Okt 2026",
-            "Jam": "19:28:18 WIB",
-            "DateTime": "2026-10-10T12:28:18+00:00",
-            "Coordinates": "1.91,97.96",
-            "Lintang": "1.91 LU",
-            "Bujur": "97.96 BT",
-            "Magnitude": "4.0",
-            "Kedalaman": "9 km",
-            "Wilayah": "Pusat gempa berada di laut 50 km selatan Aceh Singkil",
-            "Dirasakan": "III Aceh Singkil"
-          },
-          {
-            "Tanggal": "10 Okt 2026",
-            "Jam": "18:53:23 WIB",
-            "DateTime": "2026-10-10T11:53:23+00:00",
-            "Coordinates": "-8.98,110.69",
-            "Lintang": "8.98 LS",
-            "Bujur": "110.69 BT",
-            "Magnitude": "4.4",
-            "Kedalaman": "75 km",
-            "Wilayah": "Pusat gempa berada di laut 100 km barat daya Pacitan",
-            "Dirasakan": "II Pacitan"
           }
         ]
       }
