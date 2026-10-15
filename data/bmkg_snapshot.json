@@ -1,21 +1,21 @@
 {
-  "fetched_at_utc": "2026-10-15T13:26:05+00:00",
+  "fetched_at_utc": "2026-10-15T18:17:58+00:00",
   "feeds": {
     "gempa_terbaru": {
       "Infogempa": {
         "gempa": {
           "Tanggal": "15 Okt 2026",
-          "Jam": "17:58:23 WIB",
-          "DateTime": "2026-10-15T10:58:23+00:00",
-          "Coordinates": "-6.73,106.61",
-          "Lintang": "6.73 LS",
-          "Bujur": "106.61 BT",
-          "Magnitude": "4.1",
-          "Kedalaman": "5 km",
-          "Wilayah": "Pusat gempa berada di darat 26 km barat daya kota Bogor",
+          "Jam": "22:32:38 WIB",
+          "DateTime": "2026-10-15T15:32:38+00:00",
+          "Coordinates": "-7.22,107.71",
+          "Lintang": "7.22 LS",
+          "Bujur": "107.71 BT",
+          "Magnitude": "2.7",
+          "Kedalaman": "4 km",
+          "Wilayah": "Pusat gempa berada di darat 21 km barat Kab. Garut",
           "Potensi": "Gempa ini dirasakan untuk diteruskan pada masyarakat",
-          "Dirasakan": "IV Pamijahan, IV Kabandungan",
-          "Shakemap": "20261015175823.mmi.jpg"
+          "Dirasakan": "III Darajat, III Pasirwangi",
+          "Shakemap": "20261015223238.mmi.jpg"
         }
       }
     },
@@ -210,6 +210,18 @@
         "gempa": [
           {
             "Tanggal": "15 Okt 2026",
+            "Jam": "22:32:38 WIB",
+            "DateTime": "2026-10-15T15:32:38+00:00",
+            "Coordinates": "-7.22,107.71",
+            "Lintang": "7.22 LS",
+            "Bujur": "107.71 BT",
+            "Magnitude": "2.7",
+            "Kedalaman": "4 km",
+            "Wilayah": "Pusat gempa berada di darat 21 km barat Kab. Garut",
+            "Dirasakan": "III Darajat, III Pasirwangi"
+          },
+          {
+            "Tanggal": "15 Okt 2026",
             "Jam": "17:58:23 WIB",
             "DateTime": "2026-10-15T10:58:23+00:00",
             "Coordinates": "-6.73,106.61",
@@ -375,18 +387,6 @@
             "Kedalaman": "76 km",
             "Wilayah": "Pusat gempa berada di darat 29 km barat laut Pohuwato",
             "Dirasakan": "III-IV Buol, III-IV Tolitoli, III Kab. Gorontalo, II - III Kota Gorontalo, II - III Kab. Bone Bolango, III Kab. Boalemo, III Kab. Pohuwato"
-          },
-          {
-            "Tanggal": "11 Okt 2026",
-            "Jam": "17:17:12 WIB",
-            "DateTime": "2026-10-11T10:17:12+00:00",
-            "Coordinates": "0.09,100.16",
-            "Lintang": "0.09 LU",
-            "Bujur": "100.16 BT",
-            "Magnitude": "4.0",
-            "Kedalaman": "16 km",
-            "Wilayah": "Pusat gempa berada di darat 5 km selatan Pasaman",
-            "Dirasakan": "II - III Kota Padang Panjang, II - III Kota Bukittinggi, III Kabupaten Pasaman"
           }
         ]
       }
