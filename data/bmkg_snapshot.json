@@ -1,21 +1,21 @@
 {
-  "fetched_at_utc": "2026-10-16T12:24:31+00:00",
+  "fetched_at_utc": "2026-10-16T17:23:58+00:00",
   "feeds": {
     "gempa_terbaru": {
       "Infogempa": {
         "gempa": {
           "Tanggal": "16 Okt 2026",
-          "Jam": "10:21:55 WIB",
-          "DateTime": "2026-10-16T03:21:55+00:00",
-          "Coordinates": "-6.69,106.63",
-          "Lintang": "6.69 LS",
+          "Jam": "21:22:04 WIB",
+          "DateTime": "2026-10-16T14:22:04+00:00",
+          "Coordinates": "-6.76,106.63",
+          "Lintang": "6.76 LS",
           "Bujur": "106.63 BT",
-          "Magnitude": "2.5",
-          "Kedalaman": "9 km",
-          "Wilayah": "Pusat gempa berada di darat 21 km Barat Daya Kota Bogor",
+          "Magnitude": "2.3",
+          "Kedalaman": "18 km",
+          "Wilayah": "Pusat gempa berada di darat 26 km Barat Daya Kota Bogor",
           "Potensi": "Gempa ini dirasakan untuk diteruskan pada masyarakat",
-          "Dirasakan": "II Kabandungan",
-          "Shakemap": "20261016102155.mmi.jpg"
+          "Dirasakan": "II Leuwiliang",
+          "Shakemap": "20261016212204.mmi.jpg"
         }
       }
     },
@@ -210,6 +210,18 @@
         "gempa": [
           {
             "Tanggal": "16 Okt 2026",
+            "Jam": "21:22:04 WIB",
+            "DateTime": "2026-10-16T14:22:04+00:00",
+            "Coordinates": "-6.76,106.63",
+            "Lintang": "6.76 LS",
+            "Bujur": "106.63 BT",
+            "Magnitude": "2.3",
+            "Kedalaman": "18 km",
+            "Wilayah": "Pusat gempa berada di darat 26 km Barat Daya Kota Bogor",
+            "Dirasakan": "II Leuwiliang"
+          },
+          {
+            "Tanggal": "16 Okt 2026",
             "Jam": "10:21:55 WIB",
             "DateTime": "2026-10-16T03:21:55+00:00",
             "Coordinates": "-6.69,106.63",
@@ -375,18 +387,6 @@
             "Kedalaman": "18 km",
             "Wilayah": "Pusat gempa berada di laut 38 km Barat Daya Muarabinuangeun",
             "Dirasakan": "II-III Palabuhan Ratu, II Labuan, II Ciemas, II Gekbrong"
-          },
-          {
-            "Tanggal": "12 Okt 2026",
-            "Jam": "05:07:28 WIB",
-            "DateTime": "2026-10-11T22:07:28+00:00",
-            "Coordinates": "-4.08,136.34",
-            "Lintang": "4.08 LS",
-            "Bujur": "136.34 BT",
-            "Magnitude": "4.5",
-            "Kedalaman": "10 km",
-            "Wilayah": "Pusat gempa berada di darat 7 km tenggara Deiyai",
-            "Dirasakan": "III Enarotali"
           }
         ]
       }
