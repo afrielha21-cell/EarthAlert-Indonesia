@@ -1,21 +1,21 @@
 {
-  "fetched_at_utc": "2026-10-19T13:32:19+00:00",
+  "fetched_at_utc": "2026-10-19T19:56:15+00:00",
   "feeds": {
     "gempa_terbaru": {
       "Infogempa": {
         "gempa": {
           "Tanggal": "19 Okt 2026",
-          "Jam": "19:06:02 WIB",
-          "DateTime": "2026-10-19T12:06:02+00:00",
-          "Coordinates": "-7.99,120.09",
-          "Lintang": "7.99 LS",
-          "Bujur": "120.09 BT",
-          "Magnitude": "4.5",
-          "Kedalaman": "6 km",
-          "Wilayah": "Pusat gempa berada di laut 60 km Utara Labuanbajo",
+          "Jam": "20:46:11 WIB",
+          "DateTime": "2026-10-19T13:46:11+00:00",
+          "Coordinates": "4.16,97.51",
+          "Lintang": "4.16 LU",
+          "Bujur": "97.51 BT",
+          "Magnitude": "4.2",
+          "Kedalaman": "5 km",
+          "Wilayah": "Pusat gempa berada di darat 26 km Timur Laut Kab. Gayo Lues",
           "Potensi": "Gempa ini dirasakan untuk diteruskan pada masyarakat",
-          "Dirasakan": "II Kab. Manggarai",
-          "Shakemap": "20261019190602.mmi.jpg"
+          "Dirasakan": "III Kab. Gayo Lues, II Aceh Timur",
+          "Shakemap": "20261019204611.mmi.jpg"
         }
       }
     },
@@ -210,6 +210,18 @@
         "gempa": [
           {
             "Tanggal": "19 Okt 2026",
+            "Jam": "20:46:11 WIB",
+            "DateTime": "2026-10-19T13:46:11+00:00",
+            "Coordinates": "4.16,97.51",
+            "Lintang": "4.16 LU",
+            "Bujur": "97.51 BT",
+            "Magnitude": "4.2",
+            "Kedalaman": "5 km",
+            "Wilayah": "Pusat gempa berada di darat 26 km Timur Laut Kab. Gayo Lues",
+            "Dirasakan": "III Kab. Gayo Lues, II Aceh Timur"
+          },
+          {
+            "Tanggal": "19 Okt 2026",
             "Jam": "19:06:02 WIB",
             "DateTime": "2026-10-19T12:06:02+00:00",
             "Coordinates": "-7.99,120.09",
@@ -375,18 +387,6 @@
             "Kedalaman": "10 km",
             "Wilayah": "Pusat gempa berada di laut 53 km utara Ruteng, Manggarai",
             "Dirasakan": "II - III Kab. Manggarai"
-          },
-          {
-            "Tanggal": "13 Okt 2026",
-            "Jam": "17:22:02 WIB",
-            "DateTime": "2026-10-13T10:22:02+00:00",
-            "Coordinates": "-9.06,111.37",
-            "Lintang": "9.06 LS",
-            "Bujur": "111.37 BT",
-            "Magnitude": "4.5",
-            "Kedalaman": "10 km",
-            "Wilayah": "Pusat gempa berada di laut 103 km selatan Pacitan",
-            "Dirasakan": "III Trenggalek"
           }
         ]
       }
