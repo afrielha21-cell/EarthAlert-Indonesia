@@ -1,27 +1,39 @@
 {
-  "fetched_at_utc": "2026-10-20T15:05:28+00:00",
+  "fetched_at_utc": "2026-10-20T19:16:43+00:00",
   "feeds": {
     "gempa_terbaru": {
       "Infogempa": {
         "gempa": {
           "Tanggal": "20 Okt 2026",
-          "Jam": "18:28:11 WIB",
-          "DateTime": "2026-10-20T11:28:11+00:00",
-          "Coordinates": "-8.37,116.99",
-          "Lintang": "8.37 LS",
-          "Bujur": "116.99 BT",
-          "Magnitude": "3.7",
-          "Kedalaman": "15 km",
-          "Wilayah": "Pusat gempa berada di laut 6 km Barat Laut Pulau Saringi",
+          "Jam": "23:29:35 WIB",
+          "DateTime": "2026-10-20T16:29:35+00:00",
+          "Coordinates": "3.79,95.72",
+          "Lintang": "3.79 LU",
+          "Bujur": "95.72 BT",
+          "Magnitude": "5.4",
+          "Kedalaman": "74 km",
+          "Wilayah": "Pusat gempa berada di laut 59 km barat daya Meulaboh",
           "Potensi": "Gempa ini dirasakan untuk diteruskan pada masyarakat",
-          "Dirasakan": "III Kab. Sumbawa",
-          "Shakemap": "20261020182811.mmi.jpg"
+          "Dirasakan": "III Kab. Aceh Selatan, III Kab. Simeulue, III-IV Kab. Aceh Barat, III-IV Kab. Aceh Barat Daya, II Kab. Bener Meriah, II-III Kota Banda Aceh, II-III Kab. Aceh Besar , III-IV Kab. Nagan Raya",
+          "Shakemap": "20261020232935.mmi.jpg"
         }
       }
     },
     "m5_plus": {
       "Infogempa": {
         "gempa": [
+          {
+            "Tanggal": "20 Okt 2026",
+            "Jam": "23:29:35 WIB",
+            "DateTime": "2026-10-20T16:29:35+00:00",
+            "Coordinates": "3.79,95.72",
+            "Lintang": "3.79 LU",
+            "Bujur": "95.72 BT",
+            "Magnitude": "5.4",
+            "Kedalaman": "74 km",
+            "Wilayah": "59 km BaratDaya MEULABOH-ACEHBARAT",
+            "Potensi": "Tidak berpotensi tsunami"
+          },
           {
             "Tanggal": "18 Okt 2026",
             "Jam": "15:00:08 WIB",
@@ -189,18 +201,6 @@
             "Kedalaman": "10 km",
             "Wilayah": "33 km TimurLaut SARMI-PAPUA",
             "Potensi": "Tidak berpotensi tsunami"
-          },
-          {
-            "Tanggal": "18 Sep 2026",
-            "Jam": "21:36:17 WIB",
-            "DateTime": "2026-09-18T14:36:17+00:00",
-            "Coordinates": "-8.64,105.74",
-            "Lintang": "8.64 LS",
-            "Bujur": "105.74 BT",
-            "Magnitude": "5.2",
-            "Kedalaman": "10 km",
-            "Wilayah": "198 km BaratDaya BAYAH-BANTEN",
-            "Potensi": "Tidak berpotensi tsunami"
           }
         ]
       }
@@ -208,6 +208,18 @@
     "dirasakan": {
       "Infogempa": {
         "gempa": [
+          {
+            "Tanggal": "20 Okt 2026",
+            "Jam": "23:29:35 WIB",
+            "DateTime": "2026-10-20T16:29:35+00:00",
+            "Coordinates": "3.79,95.72",
+            "Lintang": "3.79 LU",
+            "Bujur": "95.72 BT",
+            "Magnitude": "5.4",
+            "Kedalaman": "74 km",
+            "Wilayah": "Pusat gempa berada di laut 59 km barat daya Meulaboh",
+            "Dirasakan": "III Kab. Aceh Selatan, III Kab. Simeulue, III-IV Kab. Aceh Barat, III-IV Kab. Aceh Barat Daya, II Kab. Bener Meriah, II-III Kota Banda Aceh, II-III Kab. Aceh Besar , III-IV Kab. Nagan Raya"
+          },
           {
             "Tanggal": "20 Okt 2026",
             "Jam": "18:28:11 WIB",
@@ -375,18 +387,6 @@
             "Kedalaman": "4 km",
             "Wilayah": "Pusat gempa berada di darat 21 km barat Kab. Garut",
             "Dirasakan": "III Darajat, III Pasirwangi"
-          },
-          {
-            "Tanggal": "15 Okt 2026",
-            "Jam": "17:58:23 WIB",
-            "DateTime": "2026-10-15T10:58:23+00:00",
-            "Coordinates": "-6.73,106.61",
-            "Lintang": "6.73 LS",
-            "Bujur": "106.61 BT",
-            "Magnitude": "4.1",
-            "Kedalaman": "5 km",
-            "Wilayah": "Pusat gempa berada di darat 26 km barat daya kota Bogor",
-            "Dirasakan": "IV Pamijahan, IV Kabandungan"
           }
         ]
       }
