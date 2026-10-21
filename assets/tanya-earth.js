@@ -127,7 +127,8 @@
    return null;
   }
   if(includesAny(n,'terbesar','magnitudo paling tinggi','magnitudo terbesar','gempa terkuat','paling kuat','kekuatan gempa maksimum')){
-   const row=getTop(place||includesAny(n,'indonesia')?I.greatest_magnitude_indonesia_label:I.greatest_magnitude);
+   const allLocations=includesAny(n,'termasuk filipina','luar indonesia','seluruh cakupan ekspor','seluruh arsip tanpa penyaringan');
+   const row=getTop(allLocations?I.greatest_magnitude:I.greatest_magnitude_indonesia_label);
    if(row.length)return topEventsAnswer(row.slice(0,4),'Gempa bermagnitudo terbesar pada arsip',`periode 2016–2026 yang terunduh${year?' tahun '+year:''}`);
    return null;
   }
@@ -158,7 +159,7 @@
   if(descending||shallow||deep){arr.sort((a,b)=>shallow?Number(a.dep)-Number(b.dep):deep?Number(b.dep)-Number(a.dep):Number(b.m)-Number(a.m));return arr.length?topEventsAnswer(arr.slice(0,5),'Kejadian yang cocok dengan filter',`data ${yr||'2016–2026'}${place?' berlabel lokasi '+place:''}`):resp('Tidak ada rekaman yang cocok','Aku tidak menemukan kejadian pada arsip sesuai filter pertanyaan.',{sources:idxSource('repo')});}
   let all=arr.length;
   if(!arr.length)return resp('Tidak ditemukan kejadian sesuai pencarian',`Tidak ada catatan yang cocok dengan filter${yr?' tahun '+yr:''}${place?' dan label '+place:''}${mag!==null?' M≥'+mag:''}. Ini tidak berarti tidak pernah ada gempa.`,{sources:idxSource('repo')});
-  const magMax=Math.max(...arr.map(e=>Number(e.m)||0));
+  const magMax=arr.reduce((max,e)=>Math.max(max,Number(e.m)||0),0);
   arr.sort((a,b)=>String(b.t).localeCompare(String(a.t)));
   return resp('Hasil penyaringan katalog gempa',`Ditemukan ${fnum(all)} kejadian ${mag!==null?'M≥'+fnum(mag,1):'semua magnitudo'}${place?' dengan label wilayah terkait “'+place+'”':''} dalam arsip ${yr||'2016–2026'} yang tersedia. Magnitudo terbesar pada hasil ini adalah M ${fnum(magMax,2)}.`,{bullets:arr.slice(0,4).map(e=>`${cleanDate(e.t)} UTC · ${e.p} · M ${fnum(e.m,2)} · kedalaman ${fnum(e.dep,1)} km.`),note:'Pencarian lokasi mencocokkan nama pada label katalog BMKG, bukan batas administrasi wilayah. Karena itu, gempa dengan label umum seperti “Java” dapat mencakup wilayah luas.',sources:idxSource('repo')});
  }
