@@ -11,9 +11,10 @@
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" crossorigin="anonymous" onerror="this.onerror=null;this.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'"/>
-<link href="styles.css?v=21.0" rel="stylesheet"/>
+<link href="styles.css?v=22.0" rel="stylesheet"/>
 <!-- Leaflet dimuat tanpa memblokir fitur lain melalui ensureLeaflet() dalam app.js -->
-<script defer src="app.js?v=21.0"></script>
+<script defer src="app.js?v=22.0"></script>
+<script defer src="assets/tanya-earth.js?v=22.0"></script>
 </head>
 <body>
 <header class="masthead">
@@ -32,10 +33,14 @@
 
 <button class="nav-item" data-nav="metodologi" type="button">Metodologi</button>
 </nav>
-<span class="head-tag">SCIENCE HUNTER INDONESIA <small style="font-size:9px;opacity:.68">V19</small></span>
+<div class="brand-partners" aria-label="Mitra dan sumber data EarthAlert">
+<img src="assets/logos/mtsn17.webp" alt="Logo MTsN 17 Jakarta" title="MTsN 17 Jakarta" width="46" height="46"/>
+<img src="assets/logos/bmkg.webp" alt="Logo BMKG" title="Badan Meteorologi Klimatologi dan Geofisika" width="46" height="46"/>
+<img src="assets/logos/kemenag.webp" alt="Logo Kementerian Agama" title="Kementerian Agama Republik Indonesia" width="46" height="46"/>
+</div>
 </div>
 </header>
-<main class="shell" data-earthalert-version="21.0">
+<main class="shell" data-earthalert-version="22.0">
 <div class="site-status" id="site-status" role="status">Memuat data riset EarthAlert…</div>
 <section aria-labelledby="atlasTitle" class="page active" id="page-atlas">
 <div class="page-head"><div><div class="eyebrow">ATLAS ML / INDONESIA 2016—2025</div><h1 id="atlasTitle">Membaca pola kegempaan, <span>bukan sekadar melihat titik.</span></h1><p>Peta interaktif K-Means dari katalog BMKG 2016–2025 dengan tiga indikator: frekuensi, magnitudo P90, dan kedalaman. Telusuri zona heksagon, titik episenter, atau kasus dampak historis.</p></div></div>
@@ -46,6 +51,20 @@
 <div class="tool-row second"><div class="tool-inline"><label for="cluster-filter">KLASTER</label><select id="cluster-filter"><option value="all">Semua klaster</option><option value="A">A — Kedalaman relatif rendah</option><option value="B">B — P90 magnitudo relatif tinggi</option><option value="C">C — Kedalaman relatif besar</option><option value="D">D — Frekuensi tercatat relatif tinggi</option></select></div><div class="tool-inline"><label for="alpha-range">TRANSPARANSI ZONA <b id="alpha-label">75%</b></label><input id="alpha-range" max="95" min="50" step="5" type="range" value="75"/></div><div class="tool-inline check-row"><label><input checked="" id="zone-layer" type="checkbox"/> Layer zona</label><label><input checked="" id="markers-layer" type="checkbox"/> Titik klaster</label></div></div>
 <div class="map-frame"><div class="map-status" id="map-status" role="status" aria-live="polite" hidden></div><div id="atlasMap" aria-label="Peta interaktif Leaflet dengan basemap Ocean Relief atau Satelit dan data zona kegempaan BMKG"></div><div class="map-zoom"><button aria-label="Kembali ke tampilan Indonesia" title="Fokus kembali ke Indonesia" id="zoomHome" type="button">⌖</button><div class="map-place-badge" id="mapPlaceBadge" aria-live="polite">Lokasi zona akan muncul di sini</div></div><div class="map-caption">Peta interaktif Leaflet · Ocean Relief / Satelit (Esri) · Heksagon BMKG · Geser dan zoom bebas</div></div>
 <div aria-label="Legenda klaster" class="legend"><span><i style="--dot:#EF4444"></i>A · Kedalaman relatif rendah</span><span><i style="--dot:#F97316"></i>B · P90 magnitudo tinggi</span><span><i style="--dot:#22C55E"></i>C · Kedalaman relatif besar</span><span><i style="--dot:#D7A000"></i>D · Frekuensi tinggi</span></div>
+<section class="earth-panel" id="tanya-earth" aria-labelledby="earth-title">
+<div class="earth-panel-head"><div class="earth-panel-title"><span class="earth-panel-symbol" aria-hidden="true">✦</span><div><span class="earth-panel-eyebrow">ASISTEN DATA EARTHALERT</span><h2 id="earth-title">Tanya Earth</h2></div></div><span class="earth-data-label">Data BMKG</span></div>
+<p class="earth-panel-copy">Punya pertanyaan tentang gempa, klaster, dampak, atau tsunami? Tanya menggunakan data yang tersedia di EarthAlert.</p>
+<form id="earth-form" class="earth-form" autocomplete="off">
+<label class="earth-sr-only" for="earth-question">Pertanyaan untuk Tanya Earth</label>
+<input id="earth-question" type="search" placeholder="Contoh: Gempa terbesar terjadi di mana?" maxlength="220" required aria-describedby="earth-privacy"/>
+<button type="submit" id="earth-submit">Tanya Earth →</button>
+</form>
+<div class="earth-quick-label">COBA PERTANYAAN</div>
+<div class="earth-suggestions" id="earth-suggestions" aria-label="Contoh pertanyaan cepat"></div>
+<div id="earth-status" class="earth-status" role="status" aria-live="polite">Siap menelusuri data historis, klaster, dan arsip BMKG.</div>
+<div id="earth-answer" class="earth-answer" aria-live="polite" hidden></div>
+<p class="earth-disclaimer" id="earth-privacy">Jawaban dihitung dan ditelusuri dari data EarthAlert, tanpa mengirim pertanyaan ke layanan AI eksternal. Bukan prediksi, penilaian risiko resmi, atau peringatan dini.</p>
+</section>
 </section>
 <aside aria-live="polite" class="detail-panel" id="atlasDetail"><div class="overline">HASIL ANALISIS</div><div class="detail-subbrand">EarthAlert</div><h2>Temukan profil gempa di peta</h2><p class="muted">Klik titik berwarna, pilih kasus dampak, atau aktifkan episenter historis. Rincian muncul di sini tanpa menutupi peta.</p><div aria-hidden="true" class="empty-art">◎</div></aside>
 </div>
