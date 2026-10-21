@@ -1,27 +1,39 @@
 {
-  "fetched_at_utc": "2026-10-21T07:39:17+00:00",
+  "fetched_at_utc": "2026-10-21T13:48:07+00:00",
   "feeds": {
     "gempa_terbaru": {
       "Infogempa": {
         "gempa": {
-          "Tanggal": "20 Okt 2026",
-          "Jam": "23:29:35 WIB",
-          "DateTime": "2026-10-20T16:29:35+00:00",
-          "Coordinates": "3.79,95.72",
-          "Lintang": "3.79 LU",
-          "Bujur": "95.72 BT",
-          "Magnitude": "5.4",
-          "Kedalaman": "74 km",
-          "Wilayah": "Pusat gempa berada di laut 59 km barat daya Meulaboh",
+          "Tanggal": "21 Okt 2026",
+          "Jam": "18:58:36 WIB",
+          "DateTime": "2026-10-21T11:58:36+00:00",
+          "Coordinates": "-5.40,104.68",
+          "Lintang": "5.40 LS",
+          "Bujur": "104.68 BT",
+          "Magnitude": "2.5",
+          "Kedalaman": "3 km",
+          "Wilayah": "Pusat gempa berada di darat 9 km utara Tanggamus",
           "Potensi": "Gempa ini dirasakan untuk diteruskan pada masyarakat",
-          "Dirasakan": "III Kab. Aceh Selatan, III Kab. Simeulue, III-IV Kab. Aceh Barat, III-IV Kab. Aceh Barat Daya, II Kab. Bener Meriah, II-III Kota Banda Aceh, II-III Kab. Aceh Besar , III-IV Kab. Nagan Raya",
-          "Shakemap": "20261020232935.mmi.jpg"
+          "Dirasakan": "II Tanggamus",
+          "Shakemap": "20261021185836.mmi.jpg"
         }
       }
     },
     "m5_plus": {
       "Infogempa": {
         "gempa": [
+          {
+            "Tanggal": "21 Okt 2026",
+            "Jam": "14:44:15 WIB",
+            "DateTime": "2026-10-21T07:44:15+00:00",
+            "Coordinates": "-7.75,128.18",
+            "Lintang": "7.75 LS",
+            "Bujur": "128.18 BT",
+            "Magnitude": "5.1",
+            "Kedalaman": "96 km",
+            "Wilayah": "62 km TimurLaut MALUKUBRTDAYA",
+            "Potensi": "Tidak berpotensi tsunami"
+          },
           {
             "Tanggal": "20 Okt 2026",
             "Jam": "23:29:35 WIB",
@@ -189,18 +201,6 @@
             "Kedalaman": "10 km",
             "Wilayah": "34 km TimurLaut RUTENG-MANGGARAI-NTT",
             "Potensi": "Tidak berpotensi tsunami"
-          },
-          {
-            "Tanggal": "19 Sep 2026",
-            "Jam": "11:18:36 WIB",
-            "DateTime": "2026-09-19T04:18:36+00:00",
-            "Coordinates": "-1.60,138.88",
-            "Lintang": "1.60 LS",
-            "Bujur": "138.88 BT",
-            "Magnitude": "5.1",
-            "Kedalaman": "10 km",
-            "Wilayah": "33 km TimurLaut SARMI-PAPUA",
-            "Potensi": "Tidak berpotensi tsunami"
           }
         ]
       }
@@ -208,6 +208,30 @@
     "dirasakan": {
       "Infogempa": {
         "gempa": [
+          {
+            "Tanggal": "21 Okt 2026",
+            "Jam": "18:58:36 WIB",
+            "DateTime": "2026-10-21T11:58:36+00:00",
+            "Coordinates": "-5.40,104.68",
+            "Lintang": "5.40 LS",
+            "Bujur": "104.68 BT",
+            "Magnitude": "2.5",
+            "Kedalaman": "3 km",
+            "Wilayah": "Pusat gempa berada di darat 9 km utara Tanggamus",
+            "Dirasakan": "II Tanggamus"
+          },
+          {
+            "Tanggal": "21 Okt 2026",
+            "Jam": "18:03:28 WIB",
+            "DateTime": "2026-10-21T11:03:28+00:00",
+            "Coordinates": "-5.39,104.68",
+            "Lintang": "5.39 LS",
+            "Bujur": "104.68 BT",
+            "Magnitude": "3.9",
+            "Kedalaman": "10 km",
+            "Wilayah": "Pusat gempa berada di darat 10 km utara Tanggamus",
+            "Dirasakan": "III Ulu Belu, Tanggamus, III Pulau Panggung, Tanggamus"
+          },
           {
             "Tanggal": "20 Okt 2026",
             "Jam": "23:29:35 WIB",
@@ -363,30 +387,6 @@
             "Kedalaman": "18 km",
             "Wilayah": "Pusat gempa berada di darat 26 km Barat Daya Kota Bogor",
             "Dirasakan": "II Leuwiliang"
-          },
-          {
-            "Tanggal": "16 Okt 2026",
-            "Jam": "10:21:55 WIB",
-            "DateTime": "2026-10-16T03:21:55+00:00",
-            "Coordinates": "-6.69,106.63",
-            "Lintang": "6.69 LS",
-            "Bujur": "106.63 BT",
-            "Magnitude": "2.5",
-            "Kedalaman": "9 km",
-            "Wilayah": "Pusat gempa berada di darat 21 km Barat Daya Kota Bogor",
-            "Dirasakan": "II Kabandungan"
-          },
-          {
-            "Tanggal": "15 Okt 2026",
-            "Jam": "22:32:38 WIB",
-            "DateTime": "2026-10-15T15:32:38+00:00",
-            "Coordinates": "-7.22,107.71",
-            "Lintang": "7.22 LS",
-            "Bujur": "107.71 BT",
-            "Magnitude": "2.7",
-            "Kedalaman": "4 km",
-            "Wilayah": "Pusat gempa berada di darat 21 km barat Kab. Garut",
-            "Dirasakan": "III Darajat, III Pasirwangi"
           }
         ]
       }
