@@ -1,21 +1,21 @@
 {
-  "fetched_at_utc": "2026-10-25T11:27:19+00:00",
+  "fetched_at_utc": "2026-10-25T16:18:07+00:00",
   "feeds": {
     "gempa_terbaru": {
       "Infogempa": {
         "gempa": {
           "Tanggal": "25 Okt 2026",
-          "Jam": "14:40:01 WIB",
-          "DateTime": "2026-10-25T07:40:01+00:00",
-          "Coordinates": "4.24,97.65",
-          "Lintang": "4.24 LU",
-          "Bujur": "97.65 BT",
-          "Magnitude": "4.7",
-          "Kedalaman": "10 km",
-          "Wilayah": "Pusat gempa berada di darat 44 km barat Kab. Aceh Tamiang",
+          "Jam": "19:47:26 WIB",
+          "DateTime": "2026-10-25T12:47:26+00:00",
+          "Coordinates": "-0.73,131.39",
+          "Lintang": "0.73 LS",
+          "Bujur": "131.39 BT",
+          "Magnitude": "3.8",
+          "Kedalaman": "6 km",
+          "Wilayah": "Pusat gempa berada di laut 13 km timur laut Kota Sorong",
           "Potensi": "Gempa ini dirasakan untuk diteruskan pada masyarakat",
-          "Dirasakan": "IV Gayo Lues",
-          "Shakemap": "20261025144001.mmi.jpg"
+          "Dirasakan": "II Kota Sorong",
+          "Shakemap": "20261025194726.mmi.jpg"
         }
       }
     },
@@ -210,6 +210,18 @@
         "gempa": [
           {
             "Tanggal": "25 Okt 2026",
+            "Jam": "19:47:26 WIB",
+            "DateTime": "2026-10-25T12:47:26+00:00",
+            "Coordinates": "-0.73,131.39",
+            "Lintang": "0.73 LS",
+            "Bujur": "131.39 BT",
+            "Magnitude": "3.8",
+            "Kedalaman": "6 km",
+            "Wilayah": "Pusat gempa berada di laut 13 km timur laut Kota Sorong",
+            "Dirasakan": "II Kota Sorong"
+          },
+          {
+            "Tanggal": "25 Okt 2026",
             "Jam": "14:40:01 WIB",
             "DateTime": "2026-10-25T07:40:01+00:00",
             "Coordinates": "4.24,97.65",
@@ -375,18 +387,6 @@
             "Kedalaman": "5 km",
             "Wilayah": "Pusat gempa berada di darat 39 km selatan Morowali Utara",
             "Dirasakan": "II - III Kolonodale"
-          },
-          {
-            "Tanggal": "17 Okt 2026",
-            "Jam": "19:46:17 WIB",
-            "DateTime": "2026-10-17T12:46:17+00:00",
-            "Coordinates": "-9.52,118.54",
-            "Lintang": "9.52 LS",
-            "Bujur": "118.54 BT",
-            "Magnitude": "4.6",
-            "Kedalaman": "10 km",
-            "Wilayah": "Pusat gempa berada di laut 49 km Barat KODI-SUMBABARATDAYA",
-            "Dirasakan": "III Sumba Barat Daya, III Kota Bima, III Kab. Bima, III Sumbawa, III Sumba Barat"
           }
         ]
       }
