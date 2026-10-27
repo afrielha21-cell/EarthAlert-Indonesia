@@ -1,27 +1,39 @@
 {
-  "fetched_at_utc": "2026-10-27T10:33:38+00:00",
+  "fetched_at_utc": "2026-10-27T16:38:21+00:00",
   "feeds": {
     "gempa_terbaru": {
       "Infogempa": {
         "gempa": {
-          "Tanggal": "26 Okt 2026",
-          "Jam": "11:53:42 WIB",
-          "DateTime": "2026-10-26T04:53:42+00:00",
-          "Coordinates": "-8.45,121.45",
-          "Lintang": "8.45 LS",
-          "Bujur": "121.45 BT",
-          "Magnitude": "4.9",
-          "Kedalaman": "13 km",
-          "Wilayah": "Pusat gempa berada di laut 30 km timur laut Mbay, Nagekeo",
+          "Tanggal": "27 Okt 2026",
+          "Jam": "21:43:13 WIB",
+          "DateTime": "2026-10-27T14:43:13+00:00",
+          "Coordinates": "-9.20,110.39",
+          "Lintang": "9.20 LS",
+          "Bujur": "110.39 BT",
+          "Magnitude": "5.4",
+          "Kedalaman": "10 km",
+          "Wilayah": "Pusat gempa berada di laut 137 km Selatan Gunungkidul",
           "Potensi": "Gempa ini dirasakan untuk diteruskan pada masyarakat",
-          "Dirasakan": "III Bajawa, III Maumere, II - III Ruteng",
-          "Shakemap": "20261026115342.mmi.jpg"
+          "Dirasakan": "II Bantul, II Sleman, II Wonogiri, II Kulon Progo, II Sukoharjo, II Trenggalek, II Nganjuk, II Pacitan, II Klaten, II Kediri, II Ponorogo, II Banjarnegara, II Lumajang, II Blitar",
+          "Shakemap": "20261027214313.mmi.jpg"
         }
       }
     },
     "m5_plus": {
       "Infogempa": {
         "gempa": [
+          {
+            "Tanggal": "27 Okt 2026",
+            "Jam": "21:43:13 WIB",
+            "DateTime": "2026-10-27T14:43:13+00:00",
+            "Coordinates": "-9.20,110.39",
+            "Lintang": "9.20 LS",
+            "Bujur": "110.39 BT",
+            "Magnitude": "5.4",
+            "Kedalaman": "10 km",
+            "Wilayah": "136 km BaratDaya GUNUNGKIDUL-DIY",
+            "Potensi": "Tidak berpotensi tsunami"
+          },
           {
             "Tanggal": "22 Okt 2026",
             "Jam": "17:57:49 WIB",
@@ -189,18 +201,6 @@
             "Kedalaman": "10 km",
             "Wilayah": "127 km BaratLaut TAHUNA-KEP.SANGIHE-SULUT",
             "Potensi": "Tidak berpotensi tsunami"
-          },
-          {
-            "Tanggal": "21 Sep 2026",
-            "Jam": "14:31:07 WIB",
-            "DateTime": "2026-09-21T07:31:07+00:00",
-            "Coordinates": "-0.70,122.45",
-            "Lintang": "0.70 LS",
-            "Bujur": "122.45 BT",
-            "Magnitude": "5.3",
-            "Kedalaman": "10 km",
-            "Wilayah": "26 km BaratDaya PULAUPUAH-SULTENG",
-            "Potensi": "Tidak berpotensi tsunami"
           }
         ]
       }
@@ -208,6 +208,18 @@
     "dirasakan": {
       "Infogempa": {
         "gempa": [
+          {
+            "Tanggal": "27 Okt 2026",
+            "Jam": "21:43:13 WIB",
+            "DateTime": "2026-10-27T14:43:13+00:00",
+            "Coordinates": "-9.20,110.39",
+            "Lintang": "9.20 LS",
+            "Bujur": "110.39 BT",
+            "Magnitude": "5.4",
+            "Kedalaman": "10 km",
+            "Wilayah": "Pusat gempa berada di laut 137 km Selatan Gunungkidul",
+            "Dirasakan": "II Bantul, II Sleman, II Wonogiri, II Kulon Progo, II Sukoharjo, II Trenggalek, II Nganjuk, II Pacitan, II Klaten, II Kediri, II Ponorogo, II Banjarnegara, II Lumajang, II Blitar"
+          },
           {
             "Tanggal": "26 Okt 2026",
             "Jam": "11:53:42 WIB",
@@ -375,18 +387,6 @@
             "Kedalaman": "5 km",
             "Wilayah": "Pusat gempa berada di laut 56 km utara Ruteng",
             "Dirasakan": "II-III Kab. Manggarai"
-          },
-          {
-            "Tanggal": "18 Okt 2026",
-            "Jam": "15:00:08 WIB",
-            "DateTime": "2026-10-18T08:00:08+00:00",
-            "Coordinates": "-8.09,120.26",
-            "Lintang": "8.09 LS",
-            "Bujur": "120.26 BT",
-            "Magnitude": "5.3",
-            "Kedalaman": "10 km",
-            "Wilayah": "Pusat gempa berada di laut 60 km timur laut Labuan Bajo",
-            "Dirasakan": "IV-V Kab. Manggarai, III Kab. Manggarai Barat, II-III Kab. Bima, II-III Kota Bima, I-II Kab. Nagekeo"
           }
         ]
       }
