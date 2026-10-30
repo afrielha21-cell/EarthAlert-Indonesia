@@ -1,27 +1,39 @@
 {
-  "fetched_at_utc": "2026-10-29T20:17:22+00:00",
+  "fetched_at_utc": "2026-10-30T00:58:45+00:00",
   "feeds": {
     "gempa_terbaru": {
       "Infogempa": {
         "gempa": {
           "Tanggal": "30 Okt 2026",
-          "Jam": "01:58:30 WIB",
-          "DateTime": "2026-10-29T18:58:30+00:00",
-          "Coordinates": "4.18,97.55",
-          "Lintang": "4.18 LU",
-          "Bujur": "97.55 BT",
-          "Magnitude": "4.3",
-          "Kedalaman": "5 km",
-          "Wilayah": "Pusat gempa berada di darat 31 km Timur Laut Kabupaten Gayolues",
-          "Potensi": "Gempa ini dirasakan untuk diteruskan pada masyarakat",
-          "Dirasakan": "III Takengon",
-          "Shakemap": "20261030015830.mmi.jpg"
+          "Jam": "03:32:13 WIB",
+          "DateTime": "2026-10-29T20:32:13+00:00",
+          "Coordinates": "-4.40,132.49",
+          "Lintang": "4.40 LS",
+          "Bujur": "132.49 BT",
+          "Magnitude": "5.3",
+          "Kedalaman": "10 km",
+          "Wilayah": "139 km BaratLaut TUAL-MALUKU",
+          "Potensi": "Tidak berpotensi tsunami",
+          "Dirasakan": "-",
+          "Shakemap": "20261030033504.mmi.jpg"
         }
       }
     },
     "m5_plus": {
       "Infogempa": {
         "gempa": [
+          {
+            "Tanggal": "30 Okt 2026",
+            "Jam": "03:32:13 WIB",
+            "DateTime": "2026-10-29T20:32:13+00:00",
+            "Coordinates": "-4.40,132.49",
+            "Lintang": "4.40 LS",
+            "Bujur": "132.49 BT",
+            "Magnitude": "5.3",
+            "Kedalaman": "10 km",
+            "Wilayah": "139 km BaratLaut TUAL-MALUKU",
+            "Potensi": "Tidak berpotensi tsunami"
+          },
           {
             "Tanggal": "29 Okt 2026",
             "Jam": "10:26:49 WIB",
@@ -188,18 +200,6 @@
             "Magnitude": "5.2",
             "Kedalaman": "92 km",
             "Wilayah": "9 km Tenggara LOMBOKBARAT-NTB",
-            "Potensi": "Tidak berpotensi tsunami"
-          },
-          {
-            "Tanggal": "06 Okt 2026",
-            "Jam": "20:11:23 WIB",
-            "DateTime": "2026-10-06T13:11:23+00:00",
-            "Coordinates": "4.94,118.77",
-            "Lintang": "4.94 LU",
-            "Bujur": "118.77 BT",
-            "Magnitude": "5.3",
-            "Kedalaman": "10 km",
-            "Wilayah": "219 km TimurLaut TARAKAN-KALTARA",
             "Potensi": "Tidak berpotensi tsunami"
           }
         ]
