@@ -1,27 +1,39 @@
 {
-  "fetched_at_utc": "2026-11-01T23:35:20+00:00",
+  "fetched_at_utc": "2026-11-02T06:00:15+00:00",
   "feeds": {
     "gempa_terbaru": {
       "Infogempa": {
         "gempa": {
-          "Tanggal": "01 Nov 2026",
-          "Jam": "12:38:59 WIB",
-          "DateTime": "2026-11-01T05:38:59+00:00",
-          "Coordinates": "4.79,96.20",
-          "Lintang": "4.79 LU",
-          "Bujur": "96.20 BT",
-          "Magnitude": "4.1",
-          "Kedalaman": "6 km",
-          "Wilayah": "Pusat gempa berada di darat 24 km Barat Daya Kab. Pidie Jaya-Aceh",
+          "Tanggal": "02 Nov 2026",
+          "Jam": "07:53:11 WIB",
+          "DateTime": "2026-11-02T00:53:11+00:00",
+          "Coordinates": "-7.08,130.07",
+          "Lintang": "7.08 LS",
+          "Bujur": "130.07 BT",
+          "Magnitude": "5.5",
+          "Kedalaman": "130 km",
+          "Wilayah": "Pusat gempa berada di laut 169 km BaratLaut Tanimbar",
           "Potensi": "Gempa ini dirasakan untuk diteruskan pada masyarakat",
-          "Dirasakan": "",
-          "Shakemap": "20261101123859.mmi.jpg"
+          "Dirasakan": "II Saumlaki",
+          "Shakemap": "20261102075311.mmi.jpg"
         }
       }
     },
     "m5_plus": {
       "Infogempa": {
         "gempa": [
+          {
+            "Tanggal": "02 Nov 2026",
+            "Jam": "07:53:11 WIB",
+            "DateTime": "2026-11-02T00:53:11+00:00",
+            "Coordinates": "-7.08,130.07",
+            "Lintang": "7.08 LS",
+            "Bujur": "130.07 BT",
+            "Magnitude": "5.5",
+            "Kedalaman": "130 km",
+            "Wilayah": "169 km BaratLaut TANIMBAR",
+            "Potensi": "Tidak berpotensi tsunami"
+          },
           {
             "Tanggal": "30 Okt 2026",
             "Jam": "03:32:13 WIB",
@@ -189,18 +201,6 @@
             "Kedalaman": "10 km",
             "Wilayah": "230 km BaratLaut TAHUNA-KEP.SANGIHE-SULUT",
             "Potensi": "Tidak berpotensi tsunami"
-          },
-          {
-            "Tanggal": "07 Okt 2026",
-            "Jam": "03:15:26 WIB",
-            "DateTime": "2026-10-06T20:15:26+00:00",
-            "Coordinates": "-8.77,116.14",
-            "Lintang": "8.77 LS",
-            "Bujur": "116.14 BT",
-            "Magnitude": "5.2",
-            "Kedalaman": "92 km",
-            "Wilayah": "9 km Tenggara LOMBOKBARAT-NTB",
-            "Potensi": "Tidak berpotensi tsunami"
           }
         ]
       }
@@ -208,6 +208,18 @@
     "dirasakan": {
       "Infogempa": {
         "gempa": [
+          {
+            "Tanggal": "02 Nov 2026",
+            "Jam": "07:53:11 WIB",
+            "DateTime": "2026-11-02T00:53:11+00:00",
+            "Coordinates": "-7.08,130.07",
+            "Lintang": "7.08 LS",
+            "Bujur": "130.07 BT",
+            "Magnitude": "5.5",
+            "Kedalaman": "130 km",
+            "Wilayah": "Pusat gempa berada di laut 169 km BaratLaut Tanimbar",
+            "Dirasakan": "II Saumlaki"
+          },
           {
             "Tanggal": "01 Nov 2026",
             "Jam": "12:38:59 WIB",
@@ -375,18 +387,6 @@
             "Kedalaman": "6 km",
             "Wilayah": "Pusat gempa berada di laut 13 km timur laut Kota Sorong",
             "Dirasakan": "II Kota Sorong"
-          },
-          {
-            "Tanggal": "25 Okt 2026",
-            "Jam": "14:40:01 WIB",
-            "DateTime": "2026-10-25T07:40:01+00:00",
-            "Coordinates": "4.24,97.65",
-            "Lintang": "4.24 LU",
-            "Bujur": "97.65 BT",
-            "Magnitude": "4.7",
-            "Kedalaman": "10 km",
-            "Wilayah": "Pusat gempa berada di darat 44 km barat Kab. Aceh Tamiang",
-            "Dirasakan": "IV Gayo Lues"
           }
         ]
       }
