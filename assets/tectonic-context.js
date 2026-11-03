@@ -66,10 +66,10 @@ function drawLayers(){
  if(typeof atlasMap==='undefined'||!atlasMap||typeof L==='undefined')return;
  for(const key of ['plates','mega','volcano','relief'])if(pmap[key]){atlasMap.removeLayer(pmap[key]);pmap[key]=null;}
  if(layerValue('plates')&&ctx.plates){
-  pmap.plates=L.geoJSON(ctx.plates,{style:f=>({color:String(f.properties?.TYPE||'').toLowerCase().includes('converg')?'#e25148':'#8b4ec9',weight:2.6,opacity:.9,dashArray:'7 4'}),onEachFeature:(f,l)=>l.bindPopup('<strong>Batas lempeng tektonik</strong><p>Jenis: '+esc(f.properties?.TYPE||'belum diklasifikasi')+'</p><small>Sumber: USGS / Esri (peta regional)</small>')}).addTo(atlasMap);
+  pmap.plates=L.geoJSON(ctx.plates,{style:f=>({color:String(f.properties?.TYPE||'').toLowerCase().includes('converg')?'#e25148':'#8b4ec9',weight:2.6,opacity:.9,dashArray:'7 4',interactive:false}),onEachFeature:(f,l)=>l.bindPopup('<strong>Batas lempeng tektonik</strong><p>Jenis: '+esc(f.properties?.TYPE||'belum diklasifikasi')+'</p><small>Sumber: USGS / Esri (peta regional)</small>')}).addTo(atlasMap);
  }
  if(layerValue('mega')&&ctx.mega){
-  pmap.mega=L.geoJSON(ctx.mega,{style:{color:'#ff9365',weight:1.6,fillColor:'#fdb18b',fillOpacity:.18,dashArray:'4 4'},onEachFeature:(f,l)=>l.bindPopup('<strong>Zona megathrust terpetakan</strong><p>'+esc(f.properties?.Name||'Referensi BNPB')+'</p><small>InaRISK / BNPB</small>')}).addTo(atlasMap);
+  pmap.mega=L.geoJSON(ctx.mega,{style:{color:'#ff9365',weight:1.6,fillColor:'#fdb18b',fillOpacity:.18,dashArray:'4 4',interactive:false},onEachFeature:(f,l)=>l.bindPopup('<strong>Zona megathrust terpetakan</strong><p>'+esc(f.properties?.Name||'Referensi BNPB')+'</p><small>InaRISK / BNPB</small>')}).addTo(atlasMap);
  }
  if(layerValue('volcano')&&ctx.volcano){
   pmap.volcano=L.geoJSON(ctx.volcano,{pointToLayer:(f,ll)=>L.circleMarker(ll,{radius:5,color:'#a94425',weight:1.4,fillColor:'#ff8d4a',fillOpacity:.89}),onEachFeature:(f,l)=>l.bindPopup('<strong>'+esc(f.properties?.NAMA_OBJEK||'Gunung api')+'</strong><p>'+esc(f.properties?.TIPE||'')+'</p><small>Sumber: Atlas Gunung Api BIG; bukan status aktivitas langsung</small>')}).addTo(atlasMap);
