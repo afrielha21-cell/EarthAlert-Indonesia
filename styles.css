@@ -206,3 +206,27 @@
 .earth-disclaimer{font-size:9px;color:#7792a0;line-height:1.65;margin:12px 0 0}
 .earth-sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 @media(max-width:650px){.earth-panel{padding:17px 13px}.earth-form{flex-direction:column}.earth-form button{width:100%}.earth-panel-title h2{font-size:19px}.earth-data-label{font-size:9px}}
+
+/* EarthAlert V23: scoped additions only; preserve existing visual design */
+.geo-controls{display:flex;gap:10px 20px;align-items:center;flex-wrap:wrap;background:#f1f7f8;border:1px solid #cfe1e5;border-radius:12px;padding:12px 15px;margin:10px 0 14px;font-size:12px;color:#31596b}
+.geo-controls>strong{font-size:12px;color:#143d50;white-space:nowrap}
+.geo-controls label{display:inline-flex;gap:7px;align-items:center;cursor:pointer;font-weight:600}
+.geo-controls input{accent-color:#087d93;width:15px;height:15px}
+.geo-controls small{color:#587c8b;font-size:10px;flex-basis:100%}
+.disaster-overview{margin:20px 0 22px}
+.disaster-overview>a{font-size:11px;color:#146f87;text-decoration:underline}
+.disaster-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin:16px 0}
+.disaster-card{border:1px solid #deebee;background:linear-gradient(180deg,#fff,#f6fbfb);border-radius:13px;padding:15px 13px}
+.disaster-n{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.disaster-n span{font-size:19px;font-weight:800;color:#6ca4b5}
+.disaster-n small{font-size:9px;font-weight:700;color:#648394;text-align:right}
+.disaster-card h3{font-size:12px;margin:9px 0 7px;color:#163d52}
+.disaster-card p{font-size:10px;line-height:1.65;color:#4a6979;margin:0}
+.mitigation-learning{margin:22px 0 0;padding:22px;border:1px solid #d6e7e9;border-radius:16px;background:#f5fafa}
+.mitigation-learning>h3{margin:0 0 16px;font-size:16px;color:#234f60}
+.learning-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.learning-grid>div{background:#fff;border-radius:11px;padding:13px;border:1px solid #e2eeef}
+.learning-grid b{font-size:12px;color:#146d80}
+.learning-grid p{font-size:11px;line-height:1.7;color:#456678;margin:8px 0 0}
+@media(max-width:1000px){.disaster-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:650px){.geo-controls{display:grid;grid-template-columns:1fr}.geo-controls label{align-items:flex-start}.disaster-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.learning-grid{grid-template-columns:1fr}}
