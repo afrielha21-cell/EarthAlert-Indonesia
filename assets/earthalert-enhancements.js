@@ -112,10 +112,30 @@ function repaintGeo(){
  if(st&&!MAPS.some(m=>document.getElementById(m.id)?.checked))st.textContent='Lapisan geologi opsional; tidak mengubah hasil K-Means.';
 }
 /* Ringkas panel detail Atlas: hapus pesan berulang yang tidak menjadi hasil utama. */
+
+function explainZone(g){
+ const n=Number(g.n),p=Number(g.m),d=Number(g.depth),a=Number(g.annual);
+ const all=DS.grids||[];
+ const values=all.map(x=>Number(x.n)).filter(Number.isFinite).sort((x,y)=>x-y);
+ const percentile=values.length?Math.round(100*values.filter(x=>x<=n).length/values.length):null;
+ const freq=percentile!==null?(percentile>=75?'termasuk kelompok dengan jumlah catatan relatif tinggi':percentile<=25?'termasuk kelompok dengan jumlah catatan relatif rendah':'berada di kisaran tengah dibanding zona lain yang dianalisis'):'menggambarkan banyaknya gempa tercatat dalam zona ini';
+ const depth=d<=60?'Kedalaman tengah ini termasuk kategori dangkal (hingga 60 km).':d<=300?'Kedalaman tengah ini termasuk kategori menengah (lebih dari 60 hingga 300 km).':'Kedalaman tengah ini termasuk kategori dalam (lebih dari 300 km).';
+ const cluster={A:'cenderung memiliki median kedalaman yang lebih dangkal dibanding kelompok lain',B:'cenderung memiliki nilai magnitudo P90 lebih tinggi dibanding kelompok lain',C:'cenderung memiliki median kedalaman lebih besar dibanding kelompok lain',D:'cenderung memiliki jumlah kejadian tercatat lebih banyak dibanding kelompok lain'}[g.c]||'memiliki kemiripan pola statistik dengan zona lain dalam kelompoknya';
+ const row=(icon,title,body)=>'<div class="zone-insight-item"><div class="zone-insight-icon">'+icon+'</div><div><h4>'+title+'</h4><p>'+body+'</p></div></div>';
+ return '<section class="zone-insights" aria-label="Penjelasan hasil analisis wilayah"><div class="zone-insights-heading"><span>MEMAHAMI HASIL ANALISIS</span><h3>Apa arti data di wilayah ini?</h3><p>Penjelasan berdasarkan catatan BMKG periode 2016–2025 pada zona yang dipilih.</p></div>'+
+ row('01','Seberapa sering gempa tercatat?', 'Terdapat <strong>'+fmt(n)+' gempa M≥4</strong> selama sepuluh tahun, rata-rata <strong>'+fmt(a,1)+' kejadian per tahun</strong>. Dibandingkan zona analisis lainnya, jumlah ini '+freq+'. Rata-rata bukan jadwal kejadian setiap tahun.')+
+ row('02','Bagaimana besarnya gempa?', 'Magnitudo P90 sebesar <strong>M '+fmt(p,2)+'</strong> berarti sekitar 90% gempa dalam zona ini memiliki magnitudo tidak melebihi nilai tersebut. Angka ini <strong>bukan gempa terbesar</strong> dan tidak memperkirakan gempa berikutnya.')+
+ row('03','Seberapa dalam sumber gempanya?', 'Median kedalaman <strong>'+fmt(d,1)+' km</strong> adalah nilai tengah dari seluruh kedalaman gempa yang dianalisis. '+depth+' Ini tidak berarti setiap gempa terjadi pada kedalaman yang sama.')+
+ row('04','Apa kesimpulan untuk zona ini?', 'Zona ini termasuk <strong>Klaster '+safe(g.c)+'</strong>, yang '+cluster+'. Pengelompokan mempertimbangkan frekuensi, P90 magnitudo, dan median kedalaman secara bersamaan. <strong>Klaster bukan peringkat bahaya atau prediksi gempa.</strong>')+
+ '</section>';
+}
 const previousGridDetail=window.gridDetail;
 window.gridDetail=function(g){
  const holder=document.createElement('div');holder.innerHTML=previousGridDetail(g);
  holder.querySelectorAll('.note,.pale-label,.example-item,.muted.small').forEach(x=>x.remove());
+ const actions=holder.querySelector('.small-actions');
+ if(actions)actions.insertAdjacentHTML('beforebegin',explainZone(g));
+ else holder.insertAdjacentHTML('beforeend',explainZone(g));
  return holder.innerHTML;
 };
 const previousEventDetail=window.eventDetail;
