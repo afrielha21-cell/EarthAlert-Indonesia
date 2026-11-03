@@ -183,8 +183,10 @@ function bootTectonics(){
  setTimeout(()=>clearInterval(timer),24000);
  loadData();
 }
+const previousBasemap=window.setBasemap;
+if(typeof previousBasemap==='function')window.setBasemap=function(){const out=previousBasemap();setTimeout(drawLayers,150);return out;};
 const previousGrid=window.gridDetail;
-window.gridDetail=function(g){ctx.selected=g;const v=previousGrid(g);requestAnimationFrame(()=>{if(ctx.selected?.id===g.id)renderIntegrated(g);});return v;};
+window.gridDetail=function(g){ctx.selected=g;const v=previousGrid(g).replace(/<section class="zone-insights"[\s\S]*?<\/section>/,'');requestAnimationFrame(()=>{if(ctx.selected?.id===g.id)renderIntegrated(g);});return v;};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(bootTectonics,950),{once:true});else setTimeout(bootTectonics,950);
 if(typeof module!=='undefined'&&module.exports)module.exports={km,distLine,insideGeo,spatialFor,interpretation,compareText};
 })();
