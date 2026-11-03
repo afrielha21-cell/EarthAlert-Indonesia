@@ -25,7 +25,7 @@ const EXTRA=[
  {bmkg_catalog_id:'BMKG-EX-20250925-BANYUWANGI',bmkg_date:'2025-09-25',bmkg_place:'Banyuwangi / Situbondo, Jawa Timur',lat:-7.87,lon:114.45,bmkg_magnitude:5.7,bmkg_depth_km:12,category:'Rumah dan tempat ibadah',impact_summary:'Katalog mencatat kerusakan rumah serta tempat ibadah di Banyuwangi dan Situbondo, termasuk kerusakan berat, sedang, dan ringan.',detail_extra:'Situbondo: 21 rumah rusak berat, 11 sedang, 16 ringan, dan satu masjid rusak; Banyuwangi: satu rumah rusak berat dan satu tempat ibadah.',context_tags:['hunian','fasilitas publik'],impact_scope:'single',bmkg_page:45}
 ].map(c=>Object.assign(c,{bmkg_pdf_url:'https://content.bmkg.go.id/wp-content/uploads/Katalog-Gempabumi-Signifikan-Merusak-1821-2025_BMKG.pdf#page='+c.bmkg_page}));
 const TSDETAIL={
- '2018-12-22':{h:'Catatan tinggi maksimum katalog: 85 m (perlu dibedakan dari tinggi pengamatan per lokasi)',victims:'431 korban meninggal tercatat',extra:'Catatan BMKG: aktivitas Gunung Anak Krakatau dan longsoran material vulkanik; pengamatan BIG dan survei lapangan menunjukkan tinggi gelombang sangat bervariasi.'},
+ '2018-12-22':{h:'Pengamatan tinggi tsunami berbeda-beda antarlokasi; lihat rincian survei dan tide gauge dalam katalog BMKG',victims:'431 korban meninggal tercatat',extra:'Catatan BMKG: aktivitas Gunung Anak Krakatau dan longsoran material vulkanik; pengamatan BIG dan survei lapangan menunjukkan tinggi gelombang sangat bervariasi.'},
  '2023-04-24':{h:'0,11 m tercatat di Pulau Nias',extra:'Gelombang kecil dalam catatan pengamatan tsunami 2023, bukan status peringatan saat ini.'},
  '2022-11-18':{h:'0,25 m pada rekaman tide gauge',extra:'Tinggi yang disebut merupakan pengamatan pada instrumen, bukan proyeksi genangan.'},
  '2021-12-14':{h:'Sekitar 0,07 m di Marapokot dan Reo'},
@@ -109,6 +109,22 @@ function repaintGeo(){
  }
  if(st&&!MAPS.some(m=>document.getElementById(m.id)?.checked))st.textContent='Lapisan geologi opsional; tidak mengubah hasil K-Means.';
 }
+/* Ringkas panel detail Atlas: hapus pesan berulang yang tidak menjadi hasil utama. */
+const previousGridDetail=window.gridDetail;
+window.gridDetail=function(g){
+ const holder=document.createElement('div');holder.innerHTML=previousGridDetail(g);
+ holder.querySelectorAll('.note,.pale-label,.example-item,.muted.small').forEach(x=>x.remove());
+ return holder.innerHTML;
+};
+const previousEventDetail=window.eventDetail;
+window.eventDetail=function(e){
+ const holder=document.createElement('div');holder.innerHTML=previousEventDetail(e);
+ holder.querySelectorAll('.note,.pale-label,.example-item,.muted.small').forEach(x=>x.remove());
+ return holder.innerHTML;
+};
+window.caseDetails=function(c,mini=false){
+ return unifiedDetail({kind:'gempa',data:c})+(mini?caseAdviceHtml(c,{compact:true}):'');
+};
 const originalSetupMap=window.setupMap;
 window.setupMap=async function(){
  await originalSetupMap();
