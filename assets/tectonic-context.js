@@ -56,6 +56,8 @@ async function loadData(){
  ];
  await Promise.all(configs.map(async ([key,url,params])=>{try{
   ctx[key]=await geoFetch(url,params);
+  if(key==='volcano')ctx[key].features=ctx[key].features.filter(f=>/\btipe\s*a\b/i.test(String(f.properties?.TIPE||'')));
+  if(key==='plates'&&ctx[key].features.length>=999)ctx.errors[key]='Sumber mungkin mengembalikan hasil terbatas; gunakan untuk konteks regional.';
  }catch(err){ctx.errors[key]=err.message;ctx[key]=null;}}));
  ctx.ready=true;drawLayers();if(ctx.selected)renderIntegrated(ctx.selected);
 }
@@ -130,7 +132,7 @@ function interpretation(g){
 }
 function renderIntegrated(g){
  ctx.selected=g;
- const container=id('atlas-detail')||id('zone-detail')||document.querySelector('#atlas-detail-content');
+ const container=id('atlasDetail');
  if(!container)return;
  const old=container.querySelector('#integrated-result');
  if(old)old.remove();
@@ -172,14 +174,17 @@ function initCompare(){
  if(id('compare-feedback'))id('compare-feedback').textContent='Pilih dua zona pada menu. Kamu juga bisa memakai zona terakhir dari peta sebagai Zona A.';
 }
 function bootTectonics(){
+ if(!Array.isArray(DS?.grids)||!DS.grids.length){setTimeout(bootTectonics,650);return;}
  initCompare();
+ const initial=DS.grids.find(g=>g.c==='B'&&g.n>=30)||DS.grids[0];
+ if(initial){ctx.selected=initial;renderIntegrated(initial);}
  for(const key of ['plates','mega','volcano','relief'])id('tect-'+key)?.addEventListener('change',drawLayers);
  const timer=setInterval(()=>{if(typeof atlasMap!=='undefined'&&atlasMap){clearInterval(timer);atlasMap.on('moveend',()=>{ /* GeoJSON features remain georeferenced */});drawLayers();}},450);
  setTimeout(()=>clearInterval(timer),24000);
  loadData();
 }
 const previousGrid=window.gridDetail;
-window.gridDetail=function(g){ctx.selected=g;const v=previousGrid(g);requestAnimationFrame(()=>renderIntegrated(g));return v;};
+window.gridDetail=function(g){ctx.selected=g;const v=previousGrid(g);requestAnimationFrame(()=>{if(ctx.selected?.id===g.id)renderIntegrated(g);});return v;};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(bootTectonics,950),{once:true});else setTimeout(bootTectonics,950);
 if(typeof module!=='undefined'&&module.exports)module.exports={km,distLine,insideGeo,spatialFor,interpretation,compareText};
 })();
