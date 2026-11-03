@@ -7,8 +7,10 @@
 const PLATES='https://services.arcgis.com/ue9rwulIoeLEI9bj/arcgis/rest/services/Tectonic_Plate_Boundaries/FeatureServer/0/query';
 const MEGA='https://gis.bnpb.go.id/server/rest/services/inarisk/Faults/MapServer/0/query';
 const VOLC='https://geoservices.big.go.id/gis/rest/services/PTRA/Atlas_250K_GunungApi/MapServer/7/query';
+const FAULT='https://gis.bnpb.go.id/server/rest/services/inarisk/Faults_new/MapServer/0/query';
+const GEOLOGY='https://kspservices.big.go.id/satupeta/rest/services/PUBLIK/SUMBER_DAYA_ALAM_DAN_LINGKUNGAN/MapServer/8/query';
 const OCEAN='https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}';
-const ctx={plates:null,mega:null,volcano:null,errors:{},ready:false,selected:null};
+const ctx={plates:null,mega:null,volcano:null,errors:{},ready:false,selected:null,faults:{},geology:{},contextLoading:{}};
 const pmap={plates:null,mega:null,volcano:null,relief:null};
 const id=x=>document.getElementById(x);
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -105,6 +107,26 @@ function spatialFor(g){
  }
  return res;
 }
+async function enrichLocal(g){
+ if(ctx.contextLoading[g.id])return;
+ ctx.contextLoading[g.id]=true;
+ const lat=Number(g.lat),lon=Number(g.lon);
+ const b=[lon-1.5,lat-1.5,lon+1.5,lat+1.5].join(',');
+ const requests=[
+  (async()=>{try{const geof=await geoFetch(FAULT,{...bbox,geometry:b,outFields:'namobj,klspthn,geologi',where:'1=1'});ctx.faults[g.id]=nearest(geof,lat,lon);}catch(e){ctx.faults[g.id]=null;}})(),
+  (async()=>{try{
+   const params=new URLSearchParams({where:'1=1',geometry:lon+','+lat,geometryType:'esriGeometryPoint',spatialRel:'esriSpatialRelIntersects',inSR:'4326',outFields:'namobj,umurobj,remark',returnGeometry:'false',f:'json'});
+   const response=await fetch(GEOLOGY+'?'+params.toString(),{mode:'cors'});
+   if(!response.ok)throw Error('HTTP '+response.status);
+   const result=await response.json();
+   if(result.error)throw Error(result.error.message||'Layanan geologi gagal');
+   ctx.geology[g.id]=result.features?.[0]?.attributes||null;
+  }catch(e){ctx.geology[g.id]=null;}})()
+ ];
+ await Promise.all(requests);
+ ctx.contextLoading[g.id]=false;
+ if(ctx.selected?.id===g.id)renderIntegrated(g);
+}
 function historyFor(g){
  if(!DS.cases?.length)return null;
  const lat=Number(g.lat),lon=Number(g.lon);
@@ -118,6 +140,16 @@ function interpretation(g){
  if(sp.plate){
   const typ=String(sp.plate.f.properties?.TYPE||'').trim();s.push('Peta batas lempeng regional menunjukkan jalur lempeng terpetakan sekitar <strong>'+fmtNum(sp.plate.km,0)+' km</strong> dari titik pusat heksagon'+(typ?', dengan tipe <strong>'+esc(typ)+'</strong>':'')+'. Informasi ini membantu memperlihatkan konteks tektonik wilayah di sekitar zona.');
  }else if(!ctx.plates)s.push('Informasi batas lempeng belum tersedia dari layanan spasial saat ini. Statistik gempa pada zona tetap dapat dibaca.');
+ const fault=ctx.faults[g.id];
+ if(fault&&fault.km<=185){
+   const name=fault.f.properties?.namobj||'patahan regional';
+   const cls=fault.f.properties?.klspthn||'';
+   s.push('Pada peta patahan PVMBG/InaRISK, <strong>'+esc(name)+'</strong> merupakan garis patahan terpetakan di sekitar '+fmtNum(fault.km,0)+' km dari pusat zona'+(cls?' dengan kategori '+esc(cls):'')+'. Perbandingan ini memberi konteks lokasi struktur geologi setempat.');
+ }
+ const geology=ctx.geology[g.id];
+ if(geology&&(geology.namobj||geology.umurobj)){
+  s.push('Peta geologi BIG pada <strong>titik pusat heksagon</strong> mengidentifikasi '+(geology.namobj?'<strong>'+esc(geology.namobj)+'</strong>':'satuan batuan terpetakan')+(geology.umurobj?' dengan umur geologi '+esc(geology.umurobj):'')+'. Informasi ini menggambarkan latar batuan permukaan yang melengkapi pembacaan kegempaan.');
+ }
  if(sp.mega){
   s.push(sp.mega.within?'Titik pusat heksagon berada pada <strong>zona megathrust yang terpetakan</strong> pada lapisan InaRISK.':'Lapisan InaRISK menunjukkan batas zona megathrust terdekat sekitar <strong>'+fmtNum(sp.mega.km,0)+' km</strong> dari titik pusat heksagon.');
  }
@@ -132,6 +164,7 @@ function interpretation(g){
 }
 function renderIntegrated(g){
  ctx.selected=g;
+ if(!Object.prototype.hasOwnProperty.call(ctx.faults,g.id)&&!ctx.contextLoading[g.id])enrichLocal(g);
  const container=id('atlasDetail');
  if(!container)return;
  const old=container.querySelector('#integrated-result');
