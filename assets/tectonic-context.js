@@ -166,7 +166,7 @@ function renderIntegrated(g){
  ctx.selected=g;
  if(!Object.prototype.hasOwnProperty.call(ctx.faults,g.id)&&!ctx.contextLoading[g.id])enrichLocal(g);
  const container=id('atlasDetail');
- if(!container)return;
+ if(!container||!container.querySelector('.location-chip'))return;
  const old=container.querySelector('#integrated-result');
  if(old)old.remove();
  const node=document.createElement('div');node.id='integrated-result';node.innerHTML=interpretation(g);
