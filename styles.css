@@ -230,3 +230,15 @@
 .learning-grid p{font-size:11px;line-height:1.7;color:#456678;margin:8px 0 0}
 @media(max-width:1000px){.disaster-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:650px){.geo-controls{display:grid;grid-template-columns:1fr}.geo-controls label{align-items:flex-start}.disaster-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.learning-grid{grid-template-columns:1fr}}
+
+/* EarthAlert V24: interpretation of each selected Atlas ML hexagon */
+.zone-insights{margin:19px 0 18px;border:1px solid #d4e7ec;border-radius:14px;overflow:hidden;background:#fff}
+.zone-insights-heading{padding:18px 17px 14px;background:linear-gradient(115deg,#eef8fa,#f9fcfd)}
+.zone-insights-heading>span{font-size:9px;letter-spacing:1.2px;font-weight:800;color:#12859a}
+.zone-insights-heading h3{margin:7px 0 5px;color:#194b5f;font-size:17px;line-height:1.4}
+.zone-insights-heading p{font-size:11px;line-height:1.7;color:#557588;margin:0}
+.zone-insight-item{display:flex;gap:12px;align-items:flex-start;padding:15px 17px;border-top:1px solid #e7eff1}
+.zone-insight-icon{flex:0 0 29px;width:29px;height:29px;border-radius:9px;background:#e8f5f7;color:#0b8198;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+.zone-insight-item h4{font-size:12px;line-height:1.5;color:#21485c;margin:0 0 5px}
+.zone-insight-item p{font-size:11px;line-height:1.75;color:#496b7b;margin:0}
+.zone-insight-item strong{color:#194c60}
