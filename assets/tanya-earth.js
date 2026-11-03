@@ -4,7 +4,7 @@
 (function(root){
  'use strict';
  const doc=typeof document==='undefined'?null:document;
- const source={repo:{label:'RepoGempa BMKG / Riwayat Gempa',url:'#riwayat'},atlas:{label:'Atlas ML BMKG 2016–2025',url:'#atlas'},impact:{label:'Katalog Gempabumi Signifikan dan Merusak BMKG',url:'#dampak'},tsunami:{label:'Katalog Tsunami Indonesia BMKG',url:'#tsunami'},method:{label:'Metodologi EarthAlert',url:'#metodologi'},latest:{label:'Gempa Terkini BMKG (snapshot)',url:'#bmkg'},mitigation:{label:'Mitigasi Kontekstual',url:'#mitigasi'}};
+ const source={repo:{label:'RepoGempa BMKG / Riwayat Gempa',url:'#riwayat'},atlas:{label:'Atlas ML BMKG 2016–2025',url:'#atlas'},impact:{label:'Katalog Gempabumi Signifikan dan Merusak BMKG',url:'#dampak'},tsunami:{label:'Katalog Tsunami Indonesia BMKG · tab Dampak Gempa',url:'#dampak'},method:{label:'Metodologi EarthAlert',url:'#metodologi'},latest:{label:'Gempa Terkini BMKG (snapshot)',url:'#bmkg'},mitigation:{label:'Wawasan Mitigasi',url:'#mitigasi'}};
  const qaQuestions=[
   'Wilayah mana paling sering mengalami gempa?',
   'Gempa terbesar di Indonesia dalam data EarthAlert?',
@@ -171,14 +171,71 @@
   const row=Array.isArray(raw)?raw[0]:raw;
   return resp('Gempa terkini dari snapshot BMKG',row?`Snapshot yang tersimpan bertanggal ${j.fetched_at_utc||'waktu tidak dicantumkan'}. Kejadian pada kategori gempa terbaru: ${row.Tanggal||''} ${row.Jam||''}, magnitudo ${row.Magnitude||'—'}, kedalaman ${row.Kedalaman||'—'}.`:'Snapshot tersedia tetapi kategori yang dipilih tidak memuat informasi gempa terbaru.',{bullets:row?[`Lokasi: ${row.Wilayah||'belum tersedia'}.`,`Potensi/dirasakan: ${row.Potensi||row.Dirasakan||'lihat informasi resmi BMKG'}.`]:[],note:'Ini adalah snapshot pada waktu pengambilan, bukan klaim live saat ini. Untuk informasi paling baru, buka tab Gempa Terkini BMKG dan tekan Update atau kunjungi BMKG resmi.',sources:[source.latest,{label:'Portal resmi BMKG',url:'https://www.bmkg.go.id/gempabumi'}]});
  }
+
+ const typoDictionary={
+  'gmpa':'gempa','gempaah':'gempa','gampa':'gempa','gempaa':'gempa','gembpa':'gempa','gemp':'gempa','gempabumi':'gempa bumi',
+  'tsunmi':'tsunami','tusnami':'tsunami','tsunamy':'tsunami','stunami':'tsunami','sunami':'tsunami',
+  'magnitudo':'magnitudo','magnetudo':'magnitudo','magnitude':'magnitudo','magnitud':'magnitudo','magnitdo':'magnitudo',
+  'kmeans':'k-means','kmean':'k-means','kmens':'k-means','k-meen':'k-means','kmeens':'k-means',
+  'klastering':'klaster','cluster':'klaster','klasterr':'klaster','claster':'klaster','clustering':'klaster',
+  'kedalman':'kedalaman','kedlaman':'kedalaman','dalamnya':'kedalaman',
+  'sesear':'sesar','patahn':'patahan','ptahan':'patahan','geolgi':'geologi','geology':'geologi',
+  'mitgasi':'mitigasi','mitgation':'mitigasi','mitgasii':'mitigasi','wilyah':'wilayah',
+  'rawann':'rawan','kerwanan':'kerawanan','korbn':'korban','terbnyak':'terbanyak',
+  'skrang':'sekarang','sekrang':'sekarang','terkni':'terkini','dimna':'dimana','gimana':'bagaimana',
+  'brapa':'berapa','byk':'banyak','yg':'yang','dgn':'dengan','gak':'tidak','ga':'tidak'
+ };
+ const commonTerms=['gempa','tsunami','magnitudo','kedalaman','klaster','mitigasi','sesar','patahan','geologi','korban','terbesar','terkini','frekuensi','heksagon','riwayat','metodologi','rumah','kerusakan','bencana'];
+ function editDistance(a,b){
+  if(Math.abs(a.length-b.length)>2)return 9;
+  let prev=Array.from({length:b.length+1},(_,i)=>i);
+  for(let i=1;i<=a.length;i++){
+   const row=[i];
+   for(let j=1;j<=b.length;j++)row[j]=Math.min(row[j-1]+1,prev[j]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1));
+   prev=row;
+  }
+  return prev[b.length];
+ }
+ function repairQuestion(q){
+  return String(q||'').replace(/\b[a-zA-Z]{2,}\b/g,w=>{
+    const x=w.toLowerCase();
+    if(typoDictionary[x])return typoDictionary[x];
+    if(commonTerms.includes(x)||x.length<5||x.length>13)return w;
+    const matches=commonTerms.filter(v=>Math.abs(v.length-x.length)<=2).map(v=>({v,d:editDistance(x,v)})).sort((a,b)=>a.d-b.d);
+    if(matches.length&&matches[0].d<=1&&(matches.length===1||matches[1].d>matches[0].d))return matches[0].v;
+    return w;
+  }).trim();
+ }
+ const educational=[
+  {keys:['apa itu sesar','apa itu patahan','sesar aktif','patahan aktif','geologi'],title:'Mengenal sesar aktif dan geologi',text:'Sesar merupakan rekahan batuan yang mengalami pergeseran. Sesar aktif adalah sesar yang mempunyai bukti aktivitas geologi. Peta sesar dan geologi pada Atlas ML merupakan bahan belajar dari sumber resmi, terpisah dari tiga indikator K-Means.',sources:['atlas','method']},
+  {keys:['12 jenis','dua belas','ancaman bencana','jenis bencana'],title:'Dua belas jenis ancaman bencana',text:'Menurut pengelompokan pada Rencana Nasional Penanggulangan Bencana BNPB: gempa bumi, tsunami, letusan gunung api, tanah longsor, banjir, banjir bandang, kekeringan, cuaca ekstrem, gelombang ekstrem dan abrasi, kebakaran hutan/lahan, epidemi/wabah penyakit, dan gagal teknologi.',sources:['mitigation']},
+  {keys:['apa itu tsunami','penyebab tsunami','tsunami bisa','mengapa tsunami'],title:'Mengapa tsunami dapat terjadi?',text:'Tsunami adalah serangkaian gelombang laut akibat perpindahan massa air secara tiba-tiba; dapat dipicu oleh gempa bawah laut, aktivitas gunung api, atau longsoran. Tab Dampak Gempa mencatat kejadian historis dan membedakan pemicu tektonik dan vulkanik.',sources:['tsunami','mitigation']},
+  {keys:['apa itu gempa','gempa bumi adalah','kenapa ada gempa','penyebab gempa'],title:'Memahami gempa bumi',text:'Gempa bumi adalah getaran akibat pelepasan energi secara tiba-tiba di dalam bumi, salah satunya karena pergeseran batuan pada sesar atau pertemuan lempeng. Parameter utama yang dipelajari EarthAlert ialah magnitudo, kedalaman, dan frekuensi.',sources:['atlas','method']},
+  {keys:['kalau gempa','saat gempa','harus ngapain','apa yang dilakukan','cara selamat','apa yang harus dilakukan','tips gempa','cara mitigasi'],title:'Tindakan saat gempa',text:'Saat guncangan, lindungi kepala dan leher, berlindung di bawah meja kokoh jika aman, serta jauhi kaca dan benda yang mudah jatuh. Setelah berhenti, periksa keselamatan dan evakuasi secara tertib melalui jalur aman. Di kawasan pesisir, gempa kuat atau lama merupakan tanda alam untuk segera menuju tempat lebih tinggi.',sources:['mitigation','latest']},
+  {keys:['cara kerja k-means','kenapa k-means','apa itu k-means','algoritma k-means'],title:'Cara kerja K-Means dalam EarthAlert',text:'K-Means mengelompokkan 333 heksagon berdasarkan kemiripan frekuensi gempa M≥4, magnitudo P90, dan median kedalaman. Empat klaster dipilih setelah mengevaluasi Silhouette, WCSS, Davies–Bouldin, ukuran kelompok, serta kestabilan. Ini bukan model prediksi gempa.',sources:['method','atlas']},
+  {keys:['apa itu p90','arti p90','persentil 90','median kedalaman'],title:'Arti P90 dan median',text:'P90 magnitudo adalah nilai magnitudo persentil ke-90 pada setiap heksagon; sekitar 90% kejadian memiliki magnitudo tidak lebih besar dari nilai tersebut. Median kedalaman adalah nilai tengah kedalaman gempa di wilayah analisis, bukan kedalaman seluruh wilayah.',sources:['method']},
+  {keys:['apakah aman','rumah aman','paling aman','wilayah aman','bahaya apa','rawan tidak'],title:'EarthAlert tidak menentukan suatu lokasi aman atau tidak',text:'Warna klaster hanya menggambarkan kemiripan data historis. Menilai risiko memerlukan informasi bahaya, kerentanan, dan kapasitas yang tidak dihitung oleh K-Means EarthAlert. Gunakan informasi resmi BMKG/BPBD untuk keputusan keselamatan.',sources:['atlas','method','mitigation']}
+ ];
+ function educationalAnswer(q){
+  const n=norm(q);
+  for(const row of educational){if(row.keys.some(k=>n.includes(norm(k))))return resp(row.title,row.text,{sources:idxSource(...row.sources),status:'Penjelasan berdasarkan sumber'});}
+  if(/\b(kamu|aku|saya|namaku|nama saya|umurku|tinggal|alamat|cinta|lelucon|joke)\b/.test(n))return resp('Aku membantu membaca data EarthAlert','Aku tidak memiliki data identitas, alamat, atau kondisi pribadi pengguna. Aku bisa membantu pertanyaan gempa, katalog BMKG, sesar, K-Means, tsunami, dan wawasan mitigasi.',{sources:idxSource('atlas','method')});
+  return null;
+ }
+
  async function answer(q,I,progress=()=>{}){
   if(!I)throw Error('Indeks Tanya Earth belum tersedia');
-  const s=String(q||'').trim();if(!s)return resp('Tulis pertanyaan dahulu','Contohnya: “Lokasi mana paling sering gempa?”');
+  const s=repairQuestion(q);if(!s)return resp('Tulis pertanyaan dahulu','Contohnya: “Lokasi mana paling sering gempa?”');
+  const lesson=educationalAnswer(s);
+  if(lesson)return lesson;
   const quick=queryIndex(s,I);
   if(quick)return quick;
   const t=norm(s);
   if(includesAny(t,'terkini','terbaru','hari ini','baru saja','gempa sekarang','real time','realtime','update bmkg'))return latestAnswer();
-  return dynamicHistory(s,I,progress);
+  if(isHistoryQuery(s)||locationTerm(s)||readMag(s)!==null||includesAny(t,'terbesar','terdalam','terdangkal','paling sering','seberapa sering','gempa di ','gempa tahun','gempa pada'))return dynamicHistory(s,I,progress);
+  const docs=retrieve(s,I);
+  if(docs.length)return resp('Informasi terkait yang ditemukan','Pertanyaanmu belum cocok dengan satu jawaban pasti, tetapi ditemukan beberapa catatan yang relevan dalam katalog. Coba sebutkan lokasi, tahun, atau peristiwa untuk hasil lebih tepat.',{bullets:docs.slice(0,3).map(d=>d.title+' — '+String(d.body||'').slice(0,150)),sources:docs.slice(0,3).map(d=>({label:d.title,url:d.url}))});
+  return resp('Informasi belum tersedia untuk pertanyaan itu','Aku belum menemukan bukti yang cocok dalam data EarthAlert. Coba tulis lokasi, tahun, magnitudo, nama klaster, kejadian tsunami, atau topik mitigasi. Aku tidak akan menebak fakta yang tidak tersedia.',{status:'Belum ditemukan',sources:idxSource('atlas','method')});
  }
  function render(result){
   const rootEl=doc.getElementById('earth-answer');
