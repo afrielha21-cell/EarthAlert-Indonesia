@@ -66,14 +66,14 @@ window.initImpact=function(){
  const cats=[...new Set(DS.timeline.map(c=>c.category))].sort();
  document.querySelector('#impact-year').insertAdjacentHTML('beforeend',years.map(y=>'<option value="'+S(y)+'">'+S(y)+'</option>').join(''));
  document.querySelector('#impact-category').insertAdjacentHTML('beforeend',cats.map(y=>'<option value="'+S(y)+'">'+S(y)+'</option>').join(''));
- for(const id of ['impact-search','impact-year','impact-category','impact-kind'])document.getElementById(id)?.addEventListener(id==='impact-search'?'input':'change',()=>renderImpact());
+ for(const id of ['impact-search','impact-year','impact-category','impact-kind'])document.getElementById(id)?.addEventListener(id==='impact-search'?'input':'change',()=>window.renderImpact());
  document.getElementById('impact-list').addEventListener('click',e=>{
   const k=e.target.closest('[data-unified-id]')?.dataset.unifiedId;if(!k)return;
   const item=DS.timeline.find(x=>x.key===k);if(!item)return;
-  state.unifiedCase=k;document.querySelector('#impact-detail').innerHTML=unifiedDetail(item);renderImpact();
+  state.unifiedCase=k;document.querySelector('#impact-detail').innerHTML=unifiedDetail(item);window.renderImpact();
  });
  const first=DS.timeline.find(x=>x.title.toLowerCase().includes('palu'))||DS.timeline[0];
- state.unifiedCase=first.key;document.querySelector('#impact-detail').innerHTML=unifiedDetail(first);renderImpact();
+ state.unifiedCase=first.key;document.querySelector('#impact-detail').innerHTML=unifiedDetail(first);window.renderImpact();
 };
 window.initTsunami=function(){}; // Arsip tsunami sekarang dirender melalui Dampak Gempa.
 const originalInitMitigation=window.initMitigation;
