@@ -1,21 +1,21 @@
 {
-  "fetched_at_utc": "2026-11-03T20:58:47+00:00",
+  "fetched_at_utc": "2026-11-04T01:19:56+00:00",
   "feeds": {
     "gempa_terbaru": {
       "Infogempa": {
         "gempa": {
-          "Tanggal": "03 Nov 2026",
-          "Jam": "22:37:50 WIB",
-          "DateTime": "2026-11-03T15:37:50+00:00",
-          "Coordinates": "-0.20,123.32",
-          "Lintang": "0.20 LS",
-          "Bujur": "123.32 BT",
-          "Magnitude": "4.8",
-          "Kedalaman": "87 km",
-          "Wilayah": "Pusat gempa berada di laut 86 km Selatan Kota Gorontalo",
+          "Tanggal": "04 Nov 2026",
+          "Jam": "07:50:34 WIB",
+          "DateTime": "2026-11-04T00:50:34+00:00",
+          "Coordinates": "-7.94,120.89",
+          "Lintang": "7.94 LS",
+          "Bujur": "120.89 BT",
+          "Magnitude": "4.4",
+          "Kedalaman": "15 km",
+          "Wilayah": "Pusat gempa berada di laut 88 km timur laut Ruteng, Manggarai",
           "Potensi": "Gempa ini dirasakan untuk diteruskan pada masyarakat",
-          "Dirasakan": "III Kab. Gorontalo, II - III Kab. Bone Bolango, II - III Kab. Gorontalo Utara, II - III Kota Gorontalo, II - III Kab. Banggai, II - III Kab. Banggai Kepulauan",
-          "Shakemap": "20261103223750.mmi.jpg"
+          "Dirasakan": "III Kab. Manggarai",
+          "Shakemap": "20261104075034.mmi.jpg"
         }
       }
     },
@@ -209,6 +209,42 @@
       "Infogempa": {
         "gempa": [
           {
+            "Tanggal": "04 Nov 2026",
+            "Jam": "07:50:34 WIB",
+            "DateTime": "2026-11-04T00:50:34+00:00",
+            "Coordinates": "-7.94,120.89",
+            "Lintang": "7.94 LS",
+            "Bujur": "120.89 BT",
+            "Magnitude": "4.4",
+            "Kedalaman": "15 km",
+            "Wilayah": "Pusat gempa berada di laut 88 km timur laut Ruteng, Manggarai",
+            "Dirasakan": "III Kab. Manggarai"
+          },
+          {
+            "Tanggal": "04 Nov 2026",
+            "Jam": "07:46:08 WIB",
+            "DateTime": "2026-11-04T00:46:08+00:00",
+            "Coordinates": "-3.22,135.53",
+            "Lintang": "3.22 LS",
+            "Bujur": "135.53 BT",
+            "Magnitude": "4.6",
+            "Kedalaman": "23 km",
+            "Wilayah": "Pusat gempa berada di laut 16 km utara Nabire",
+            "Dirasakan": "II - III Nabire"
+          },
+          {
+            "Tanggal": "04 Nov 2026",
+            "Jam": "03:28:35 WIB",
+            "DateTime": "2026-11-03T20:28:35+00:00",
+            "Coordinates": "-2.08,121.02",
+            "Lintang": "2.08 LS",
+            "Bujur": "121.02 BT",
+            "Magnitude": "4.1",
+            "Kedalaman": "6 km",
+            "Wilayah": "Pusat gempa berada di darat 61 km utara Luwu Timur",
+            "Dirasakan": "II - III Morowali Utara"
+          },
+          {
             "Tanggal": "03 Nov 2026",
             "Jam": "22:37:50 WIB",
             "DateTime": "2026-11-03T15:37:50+00:00",
@@ -351,42 +387,6 @@
             "Kedalaman": "5 km",
             "Wilayah": "Pusat gempa berada di darat 31 km Timur Laut Kabupaten Gayolues",
             "Dirasakan": "III Takengon"
-          },
-          {
-            "Tanggal": "29 Okt 2026",
-            "Jam": "10:26:49 WIB",
-            "DateTime": "2026-10-29T03:26:49+00:00",
-            "Coordinates": "-5.45,141.90",
-            "Lintang": "5.45 LS",
-            "Bujur": "141.90 BT",
-            "Magnitude": "6.0",
-            "Kedalaman": "120 km",
-            "Wilayah": "Pusat gempa berada di darat 153 km tenggara Oksibil",
-            "Dirasakan": "III Boven Digoel, II Jayapura, II Merauke"
-          },
-          {
-            "Tanggal": "29 Okt 2026",
-            "Jam": "05:06:47 WIB",
-            "DateTime": "2026-10-28T22:06:47+00:00",
-            "Coordinates": "-6.34,130.52",
-            "Lintang": "6.34 LS",
-            "Bujur": "130.52 BT",
-            "Magnitude": "6.4",
-            "Kedalaman": "160 km",
-            "Wilayah": "Pusat gempa berada di laut 60 km Baratlaut Larat-Kep.Tanimbar",
-            "Dirasakan": "II - III Banda Naira, II - III Tanimbar, II - III Kaimana, II - III Sorong"
-          },
-          {
-            "Tanggal": "28 Okt 2026",
-            "Jam": "18:59:15 WIB",
-            "DateTime": "2026-10-28T11:59:15+00:00",
-            "Coordinates": "-5.40,104.66",
-            "Lintang": "5.40 LS",
-            "Bujur": "104.66 BT",
-            "Magnitude": "3.4",
-            "Kedalaman": "4 km",
-            "Wilayah": "Pusat gempa berada di darat 10 km Utara Tanggamus",
-            "Dirasakan": "II Kotaagung, II Sumberejo, II Ulu Belu, II Talang Padang, II Pulau Panggung, II Sukoharjo"
           }
         ]
       }
